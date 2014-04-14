@@ -1,0 +1,57 @@
+﻿<Page x:Class="FishRestaurant.WPF.Components" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:S="clr-namespace:Source;assembly=Source" FlowDirection="RightToLeft"
+        Background="{StaticResource Page_Background}">
+    <Grid Name="Main_GD" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="الفئة :" Style="{StaticResource Label_TextBlock}" />
+            <TextBlock Grid.Column="2" Text="الصنف :" Style="{StaticResource Label_TextBlock}" />
+            <ComboBox Grid.Column="1" Style="{StaticResource Search_ComboBox}" Name="Category_CB" SelectionChanged="FillDG" DisplayMemberPath="Name"
+                    SelectedValuePath="Id" />
+            <TextBox Grid.Column="3" Style="{StaticResource Search_TextBox}" Name="Component_TB" TextChanged="FillDG" />
+        </Grid>
+        <Popup Name="pop" Width="300" Placement="Center" StaysOpen="False" PopupAnimation="Fade" AllowsTransparency="True">
+            <Button Style="{DynamicResource Popup}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الفــــــــئــــــــــــة :" />
+                        <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="الصـــنــــــــــف :" />
+                        <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="سعر الـــبيع :" />
+                        <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource  Edit_ComboBox}" Text="{Binding Path=pro_name,Mode=OneTime}" Name="c_TB" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=pro_name,Mode=OneTime}" Name="Product_TB" />
+                        <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=pro_sell,Mode=OneTime}" Name="Sell_Price_TB" />
+                        <CheckBox Grid.Column="0" Grid.Row="3" Name="New" Style="{StaticResource New_CheckBox}" Content="جديد" />
+                        <Button Grid.Column="2" Grid.Row="3" Content="حفظ" />
+                    </Grid>
+            </Button>
+        </Popup>
+        <DataGrid Grid.Row="1" Name="ComponentsDG" Style="{StaticResource View_DataGrid}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="الفئة" Binding="{Binding Path=value}" />
+                <DataGridTextColumn Header="الصنف" Binding="{Binding Path=value}" Width="*" />
+                <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=value}" />
+                <DataGridTextColumn Header="الرصيد" Binding="{Binding Path=value}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <S:EditPanel Grid.Row="2" Add="EditPanel_Edit" />
+    </Grid>
+</Page>

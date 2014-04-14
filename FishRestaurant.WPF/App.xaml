@@ -1,0 +1,24 @@
+﻿<Application x:Class="FishRestaurant.WPF.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Background.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Button.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/CheckBox.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/ComboBox.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/ContextMenu.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/DataGrid.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/DateTimePicker.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/EditPanel.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Label.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/ListBox.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Popup.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Tab.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/TextBlock.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/TextBox.xaml" />
+                <ResourceDictionary Source="/FishRestaurant.WPF;component/Styles/Window.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

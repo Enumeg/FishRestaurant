@@ -194,4 +194,37 @@
         <Setter Property="Tag" Value="/Maintenance;component/Images/printer-blue.ico" />
         <Setter Property="Margin" Value="0,4,0,0" />
     </Style>
+    <Style TargetType="{x:Type Button}" x:Key="Add_Button">       
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Margin" Value="0.5" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                    <GradientStop Color="#ABADB3" Offset="0.05" />
+                    <GradientStop Color="#E2E3EA" Offset="0.07" />
+                    <GradientStop Color="#E3E9EF" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                        <Grid x:Name="g">
+                            <Image Source="/FishRestaurant.WPF;component/Images/Add.ico" Margin="2" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.7" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="Opacity" Value="0.7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary> 

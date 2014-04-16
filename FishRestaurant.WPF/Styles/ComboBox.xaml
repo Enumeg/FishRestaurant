@@ -216,4 +216,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CBT}" x:Key="Grid_ComboBox">
+        <Setter Property="Margin" Value="0.5" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
 </ResourceDictionary>

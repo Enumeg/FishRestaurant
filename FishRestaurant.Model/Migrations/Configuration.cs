@@ -4,13 +4,16 @@ namespace FishRestaurant.Model.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using MySql.Data.Entity;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FishRestaurant.Model.Entities.FRContext>
+    public sealed class Configuration : DbMigrationsConfiguration<FishRestaurant.Model.Entities.FRContext>
     {
         public Configuration()
         {
+            CodeGenerator = new MySqlMigrationCodeGenerator();           
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(FishRestaurant.Model.Entities.FRContext context)

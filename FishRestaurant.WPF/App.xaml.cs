@@ -1,5 +1,8 @@
-﻿using System.Configuration;
+﻿
+using System.Data.Entity;
 using System.Windows;
+using FishRestaurant.Model.Entities;
+using FishRestaurant.Model.Migrations;
 using Source;
 
 namespace FishRestaurant.WPF
@@ -12,6 +15,7 @@ namespace FishRestaurant.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FRContext, Configuration>());
             var m = new Main();
             m.ShowDialog();
 

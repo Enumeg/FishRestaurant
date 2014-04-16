@@ -16,42 +16,70 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="الفئة :" Style="{StaticResource Label_TextBlock}" />
             <TextBlock Grid.Column="2" Text="الصنف :" Style="{StaticResource Label_TextBlock}" />
-            <ComboBox Grid.Column="1" Style="{StaticResource Search_ComboBox}" Name="Category_CB" SelectionChanged="FillDG" DisplayMemberPath="Name"
+            <ComboBox Grid.Column="1" Style="{StaticResource Search_ComboBox}" Name="CategorySearchCB" SelectionChanged="FillDG" DisplayMemberPath="Name"
                     SelectedValuePath="Id" />
-            <TextBox Grid.Column="3" Style="{StaticResource Search_TextBox}" Name="Component_TB" TextChanged="FillDG" />
+            <TextBox Grid.Column="3" Style="{StaticResource Search_TextBox}" Name="ComponentSearchTB" TextChanged="FillDG" />
         </Grid>
-        <Popup Name="pop" Width="300" Placement="Center" StaysOpen="False" PopupAnimation="Fade" AllowsTransparency="True">
+        <Popup Name="pop" Width="300" Closed="pop_Closed">
             <Button Style="{DynamicResource Popup}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="35" />
-                            <RowDefinition Height="35" />
-                            <RowDefinition Height="35" />
-                            <RowDefinition Height="35" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الفــــــــئــــــــــــة :" />
-                        <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="الصـــنــــــــــف :" />
-                        <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="سعر الـــبيع :" />
-                        <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource  Edit_ComboBox}" Text="{Binding Path=pro_name,Mode=OneTime}" Name="c_TB" />
-                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=pro_name,Mode=OneTime}" Name="Product_TB" />
-                        <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=pro_sell,Mode=OneTime}" Name="Sell_Price_TB" />
-                        <CheckBox Grid.Column="0" Grid.Row="3" Name="New" Style="{StaticResource New_CheckBox}" Content="جديد" />
-                        <Button Grid.Column="2" Grid.Row="3" Content="حفظ" />
-                    </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الفــــــــئــــــــــــة :" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="الصـــنــــــــــف :" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="حد الشراء :" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource Label_TextBlock}" Text="المخزون :" />
+                    <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource  Edit_ComboBox}" SelectedItem="{Binding Path=Category}" Name="CategoryCB"
+                            DisplayMemberPath="Name" SelectedValuePath="Id" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=Name}" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=AmountLimit}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource  Edit_TextBox}" Text="{Binding Path=Stock}" />
+                    <CheckBox Grid.Column="0" Grid.Row="4" Name="New" Style="{StaticResource New_CheckBox}" Content="جديد" />
+                    <Button Grid.Column="2" Grid.Row="4" Content="حفظ" Click="Save_Click"/>
+                </Grid>
             </Button>
         </Popup>
-        <DataGrid Grid.Row="1" Name="ComponentsDG" Style="{StaticResource View_DataGrid}">
+        <DataGrid Grid.Row="1" Name="ComponentsDG" Style="{StaticResource View_DataGrid}" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="الفئة" Binding="{Binding Path=value}" />
-                <DataGridTextColumn Header="الصنف" Binding="{Binding Path=value}" Width="*" />
-                <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=value}" />
-                <DataGridTextColumn Header="الرصيد" Binding="{Binding Path=value}" />
+                <DataGridTextColumn Header="الفئة" Binding="{Binding Path=Category.Name}" />
+                <DataGridTextColumn Header="الصنف" Binding="{Binding Path=Name}" Width="*" />
+                <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=AmountLimit}" />
+                <DataGridTextColumn Header="الرصيد" Binding="{Binding Path=Stock}" />
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="0">
+                            <Setter Property="Background" Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="1">
+                            <Setter Property="Background" Value="Green" />
+                            <Setter Property="Foreground" Value="White" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="-1">
+                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="Foreground" Value="White" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
-        <S:EditPanel Grid.Row="2" Add="EditPanel_Edit" />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <S:EditPanel Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+            <Button Grid.Column="1" Style="{StaticResource Panel_Button}" Content="الفئات" Click="Categories_Click" Tag="/FishRestaurant.WPF;component/Images/Theme.ico" />
+        </Grid>
     </Grid>
 </Page>

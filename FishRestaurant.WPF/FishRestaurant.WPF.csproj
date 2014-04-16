@@ -128,9 +128,6 @@
     <Compile Include="Purchase.xaml.cs">
       <DependentUpon>Purchase.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Sell.xaml.cs">
-      <DependentUpon>Sell.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Styles\DateTimePicker.xaml.cs">
       <DependentUpon>DateTimePicker.xaml</DependentUpon>
     </Compile>
@@ -213,10 +210,6 @@
     <Page Include="Purchase.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Sell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Background.xaml">
       <Generator>MSBuild:Compile</Generator>

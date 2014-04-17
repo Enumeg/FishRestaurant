@@ -276,9 +276,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Component\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\FishRestaurant.Model\FishRestaurant.Model.csproj">
       <Project>{e8768c2e-ef2c-43c8-bb65-fa82fbb8e499}</Project>

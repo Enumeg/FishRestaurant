@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Entities\ComponentDamage.cs" />
     <Compile Include="Entities\Damage.cs" />
+    <Compile Include="Entities\ProductComponents.cs" />
     <Compile Include="Entities\ProductDamage.cs" />
     <Compile Include="Entities\Purchase.cs" />
     <Compile Include="Entities\PurchaseDetail.cs" />

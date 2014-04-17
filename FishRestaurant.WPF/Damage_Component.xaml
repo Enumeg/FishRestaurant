@@ -5,7 +5,7 @@
         xmlns:S="clr-namespace:Source;assembly=Source" 
         FlowDirection="RightToLeft"
         Background="{StaticResource Page_Background}">
-    <Grid Name="Main_GD" Background="Transparent">
+    <!--<Grid Name="Main_GD" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
             <RowDefinition Height="*" />
@@ -77,5 +77,5 @@
             </Grid.ColumnDefinitions>
             <S:EditPanel Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
         </Grid>
-    </Grid>
+    </Grid>-->
 </Page>

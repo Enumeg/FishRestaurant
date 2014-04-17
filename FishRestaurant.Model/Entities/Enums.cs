@@ -8,6 +8,6 @@ namespace FishRestaurant.Model.Entities
 {
     public enum CategoryTypes { Compontent, Product }
     public enum Transaction_Types : byte { In, Out }
-    public enum Units : byte { KG, GM }
+    public enum Units : byte { كيلو, جرام }
 
 }

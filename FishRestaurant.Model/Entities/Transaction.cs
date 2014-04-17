@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,9 @@ namespace FishRestaurant.Model.Entities
     {
         public int Id { get; set; }
         public int Number { get; set; }
-        public Transaction_Types Type { get; set; }
+        public Transaction_Types Type { get; set; }     
         public DateTime Date { get; set; }
         public decimal Total { get; set; }
-        public decimal Paid { get; set; }
-        //[NotMapped]
-        //public decimal Rest { get { return Math.Round(this.Total - this.Paid, 2); } }
+        public decimal Paid { get; set; }       
     }
 }

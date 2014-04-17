@@ -24,7 +24,10 @@
             <TextBox Grid.Column="2" Grid.Row="0" Name="NameSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="Name_Search_TB_TextChanged" />
             <TextBox Grid.Column="2" Grid.Row="1" Name="MobileSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="Name_Search_TB_TextChanged" />
             <ListBox Grid.Row="2" Grid.ColumnSpan="2" Name="LB" Style="{StaticResource View_ListBox}" />
-            <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Add" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+            
+            <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+
+
         </Grid>
         <Border BorderBrush="{StaticResource Border}" Grid.Column="1" Grid.RowSpan="3" />
         <Grid Grid.Column="2">
@@ -56,7 +59,11 @@
                 <TextBox Grid.Column="3" Grid.Row="0" Name="TelephoneTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Phone}" />
                 <TextBox Grid.Column="3" Grid.Row="1" Name="MobileTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Mobile}" />
                 <TextBox Grid.Column="1" Grid.Row="2" Name="Balance_TB" Style="{StaticResource View_TextBox}" Text="{Binding Path=cus_balance}" />
-                <cc:SavePanel Grid.Column="3" Grid.Row="4" Name="Save_Panel" Save="Save_Panel_Save" Cancel="Save_Panel_Cancel" />
+            
+            
+                <cc:SavePanel Name="Save" Grid.Row="4" Grid.Column="3" Save="Submit" Cancel="Submit" />
+
+
             </Grid>
         </Grid>
     </Grid>-->

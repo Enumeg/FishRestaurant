@@ -3,7 +3,7 @@
         xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:cc="clr-namespace:Source;assembly=Source" Background="{StaticResource Page_Background}"
         FlowDirection="RightToLeft" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignWidth="796">
-    <!--<Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="2" />
@@ -25,7 +25,9 @@
             <TextBox Grid.Column="2" Grid.Row="0" Name="NameSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="Name_Search_TB_TextChanged" />
             <TextBox Grid.Column="2" Grid.Row="1" Name="MobileSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="Name_Search_TB_TextChanged" />
             <ListBox Grid.Row="2" Grid.ColumnSpan="2" Name="LB" SelectionChanged="LB_SelectionChanged" Style="{StaticResource View_ListBox}" />
-            <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Add" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+
+            <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+        
         </Grid>
         <Border Background="{StaticResource Border}" Grid.Column="1" Grid.RowSpan="3" />
         <Grid Grid.Column="2" Name="Info_GD">
@@ -34,6 +36,8 @@
                 <RowDefinition Height="35" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            
+            
             <Grid DataContext="{Binding ElementName=LB, Path=SelectedItem}" Name="Main_GD">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
@@ -52,14 +56,22 @@
                 <TextBlock Grid.Column="2" Grid.Row="0" Text="التليفون :" Style="{StaticResource Label_TextBlock}" />
                 <TextBlock Grid.Column="2" Grid.Row="1" Text="الموبايل :" Style="{StaticResource Label_TextBlock}" />
                 
-                --><!--<TextBlock Grid.Column="0" Grid.Row="2" Text="الرصيد :" Style="{StaticResource Label_TextBlock}" />--><!--
+                <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="الرصيد :" Style="{StaticResource Label_TextBlock}" />-->
                 <TextBox Grid.Column="1" Grid.Row="0" Name="NameTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Name}" />
                 <TextBox Grid.Column="1" Grid.Row="1" Name="AddressTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Address}" />
                 <TextBox Grid.Column="3" Grid.Row="0" Name="TelephoneTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Phone}" />
                 <TextBox Grid.Column="3" Grid.Row="1" Name="MobileTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Mobile}" />
-                --><!--<TextBox Grid.Column="1" Grid.Row="2" Name="Balance_TB" Style="{StaticResource View_TextBox}" Text="{Binding Path=cus_balance}" />--><!--
-                <cc:SavePanel Grid.Column="3" Grid.Row="4" Name="Save_Panel" Save="Save_Panel_Save" Cancel="Save_Panel_Cancel" />
+                <!--<TextBox Grid.Column="1" Grid.Row="2" Name="Balance_TB" Style="{StaticResource View_TextBox}" Text="{Binding Path=cus_balance}" />-->
+            
+                <cc:SavePanel Name="Save" Grid.Row="4" Grid.Column="3" Save="Submit" Cancel="Submit" />
+         
+            
             </Grid>
+            
+            
+            
+            
+            
             <Border BorderBrush="White" BorderThickness="0,2,0,0" Grid.Row="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -87,5 +99,5 @@
             </DataGrid>
 
         </Grid>
-    </Grid>-->
+    </Grid>
 </Page>

@@ -111,7 +111,7 @@
                         Text="{Binding Path=Total,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
                 <TextBox Grid.Column="3" Style="{StaticResource View_TextBox}" Name="Paid_TB" Text="{Binding Path=Paid,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         TextChanged="Paid_TB_TextChanged" />
-                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="Rest_TB" Text="{Binding Path=Rest}" IsReadOnly="True" />
+                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="Rest_TB" IsReadOnly="True" />
             </Grid>
             <cc:SavePanel Grid.Column="1" Grid.Row="3" Name="Save_Panel" Save="Submit" Cancel="Submit" BorderBrush="Black" BorderThickness="0,2,0,0" />
             <Border Grid.Row="4" BorderBrush="White" BorderThickness="0,2,0,0">

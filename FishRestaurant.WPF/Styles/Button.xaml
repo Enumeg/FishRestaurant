@@ -32,7 +32,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="40" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Margin="10,5,0,0" />
+                            <TextBlock Grid.Column="0" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
+                                    FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Margin="10,5,0,0" />
                             <Image Margin="0,0,8,0" Grid.Column="1" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Grid>
                     </Border>
@@ -63,7 +64,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="b" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <TextBlock x:Name="t" Grid.Column="1" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="t" Grid.Column="1" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -89,7 +91,8 @@
                     <Grid>
                         <Border x:Name="OuterBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="2" Opacity="0.3" />
                         <Border x:Name="InnerBorder" Margin="2" Background="{TemplateBinding Background}" CornerRadius="2" />
-                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsKeyboardFocused" Value="true">
@@ -173,7 +176,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="40" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Margin="10,5,0,0" />
+                            <TextBlock Grid.Column="0" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
+                                    FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Margin="10,5,0,0" />
                             <Image Margin="0,0,8,0" Grid.Column="1" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Grid>
                     </Border>
@@ -194,7 +198,7 @@
         <Setter Property="Tag" Value="/Maintenance;component/Images/printer-blue.ico" />
         <Setter Property="Margin" Value="0,4,0,0" />
     </Style>
-    <Style TargetType="{x:Type Button}" x:Key="Add_Button">       
+    <Style TargetType="{x:Type Button}" x:Key="Add_Button">
         <Setter Property="Background" Value="White" />
         <Setter Property="Margin" Value="0.5" />
         <Setter Property="BorderBrush">
@@ -222,6 +226,32 @@
                         <Trigger Property="IsKeyboardFocused" Value="true">
                             <Setter Property="Opacity" Value="0.7" />
                         </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Button" x:Key="Img">
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Visibility" Value="Hidden" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Image Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/FishRestaurant.WPF;component/Images/IBTN.png" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Setter TargetName="b" Property="Background" Value="#FFD4DCE9" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="#FF5C5C5C" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding ElementName=Img,Path=IsMouseOver }" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

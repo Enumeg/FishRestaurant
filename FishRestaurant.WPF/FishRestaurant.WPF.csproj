@@ -51,8 +51,9 @@
       <HintPath>..\packages\MySql.Data.Entity.EF6.6.8.3\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="Source">
-      <HintPath>..\..\..\Others\vs2013\Source\Source\bin\Release\Source.dll</HintPath>
+    <Reference Include="Source, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\VS 2013\Source\Source\bin\Release\Source.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -118,9 +119,6 @@
     </Compile>
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Product.xaml.cs">
-      <DependentUpon>Product.xaml</DependentUpon>
     </Compile>
     <Compile Include="Products.xaml.cs">
       <DependentUpon>Products.xaml</DependentUpon>
@@ -199,10 +197,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Product.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Products.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -276,7 +270,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\IBTN.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FishRestaurant.Model\FishRestaurant.Model.csproj">
       <Project>{e8768c2e-ef2c-43c8-bb65-fa82fbb8e499}</Project>
@@ -288,6 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\question_mark_icon.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

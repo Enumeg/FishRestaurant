@@ -25,5 +25,6 @@ namespace FishRestaurant.Model.Entities
         public DbSet<Category> Categories { get; set; }
         public DbSet<Purchase> Purchases { get; set; }      
         public DbSet<Sale> Sales { get; set; }
+        public DbSet<Transfer> Transfers { get; set; }
     }
 }

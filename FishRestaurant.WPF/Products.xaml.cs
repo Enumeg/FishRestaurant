@@ -6,6 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Source;
 using FishRestaurant.Model.Entities;
+using Microsoft.Win32;
+using System.Windows.Media.Imaging;
+using Source.Converters;
 
 namespace FishRestaurant.WPF
 {
@@ -20,140 +23,259 @@ namespace FishRestaurant.WPF
         {
             InitializeComponent();
             DB = new FRContext();
-            //FillDG();
-            //InitializeLookups();
+            FillLB();
+            InitializeLookups();
         }
-        //private void InitializeLookups()
-        //{
-        //    try
-        //    {
-        //        var categories = DB.Categories.OrderBy(c => c.Name).ToList();
-        //        categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
-        //        Categories_CB.ItemsSource = DB.Categories.OrderBy(c => c.Name).ToList();
-        //        CategorySearchCB.ItemsSource = categories;
-        //    }
-        //    catch
-        //    {
+        private void InitializeLookups()
+        {
+            try
+            {
+                var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Product).OrderBy(c => c.Name).ToList();
+                categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
+                CategorySearch.ItemsSource = categories;
+                CategoryCB.ItemsSource = DB.Categories.Where(c => c.Type == CategoryTypes.Product).OrderBy(c => c.Name).ToList();
+                ComponentsCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
+                Units.ItemsSource = Enum.GetValues(typeof(Units));
+                
+            }
+            catch
+            {
 
-        //    }
-        //}
+            }
+        }
+        private void FillLB()
+        {
 
-        //private void FillDG()
-        //{
+            try
+            {
+                var query = DB.Products.Where(c => c.Name.StartsWith(ProductSearch.Text));
+                if (CategorySearch.SelectedIndex > 0)
+                {
+                    query = query.Where(c => c.CategoryId == (int)CategorySearch.SelectedValue);
+                }
 
-        //    try
-        //    {
-        //        var query = DB.Components.Where(c => c.Name.StartsWith(ComponentSearchTB.Text));
-        //        if (CategorySearchCB.SelectedIndex > 0) 
-        //        {
-        //            query = query.Where(c => c.CategoryId == (int)CategorySearchCB.SelectedValue); 
-        //        }
+                LB.ItemsSource = query.OrderBy(c => c.Name).ToList();
+            }
+            catch
+            {
 
-        //        ProductsDG.ItemsSource = query.OrderBy(c => c.Name).ToList(); 
-        //    }
-        //    catch
-        //    {
+            }
 
-        //    }
+        }
 
-        //}
+        #region ProductPanel
+        private void EP_Edit(object sender, EventArgs e)
+        {
+            try
+            {
+                if (((Button)sender).Name.Split('_')[0] == "Add")
+                {
+                    pop.DataContext = new Product();
+                    Img.Source = new BitmapImage(new Uri("/Images/question_mark_icon.jpg", UriKind.Relative));
+                }
+                else
+                {
+                    var product = LB.SelectedItem as Product;
+                    pop.DataContext = product;
+                    if (product.Image != null)
+                        Img.Source = ImageByteConverter.byteArrayToImage(product.Image);
+                    else
+                        Img.Source = new BitmapImage(new Uri("/Images/question_mark_icon.jpg", UriKind.Relative));
+                }
+                pop.IsOpen = true;
 
-        //private void EditPanel_Edit(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (((Button)sender).Name.Split('_')[0] == "Add")
-        //        {
-        //            pop.DataContext = new Component();
-        //        }
-        //        else
-        //        {
-        //            pop.DataContext = ProductsDG.SelectedItem as Component;
-        //        }
-        //        pop.IsOpen = true;
+            }
+            catch
+            {
 
-        //    }
-        //    catch
-        //    {
+            }
+        }
+        private void EP_Delete(object sender, EventArgs e)
+        {
+            try
+            {
+                if (LB.SelectedIndex != -1)
+                {
 
-        //    }
-        //}
+                    if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
+                    {
+                        DB.Products.Remove((Product)LB.SelectedItem);
+                        DB.SaveChanges();
+                        FillLB();
+                    }
+                }
+            }
+            catch
+            {
 
-        //private void EditPanel_Delete(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        if (ProductsDG.SelectedIndex != -1)
-        //        {
+            }
+        }
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Product = pop.DataContext as Product;
+                if (!Img.Source.ToString().StartsWith("pack") && !Img.Source.ToString().StartsWith("System"))
+                {
+                    Product.Image = ImageByteConverter.imageToByteArray(System.Drawing.Image.FromFile(Img.Source.ToString().Remove(0, 8)));
+                }
+                if (Product.Id == 0) { DB.Products.Add(Product); }
+                DB.SaveChanges();
+                if ((bool)New.IsChecked)
+                {
+                    pop.DataContext = new Product();
+                }
+                else
+                {
+                    pop.IsOpen = false;
+                }
+                Confirm.Check(true);
+                FillLB();
+            }
+            catch
+            {
+                Confirm.Check(false);
+            }
+        }
+        private void BTNImg_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
+                if ((bool)dlg.ShowDialog())
+                {
+                    if (!string.IsNullOrEmpty(dlg.FileName))
+                    {
+                        Img.SetValue(System.Windows.Controls.Image.SourceProperty, new BitmapImage(new Uri(dlg.FileName)));
+                    }
+                }
+            }
+            catch
+            {
 
-        //            if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
-        //            {
-        //                DB.Components.Remove((Component)ProductsDG.SelectedItem);
-        //                DB.SaveChanges();
-        //                FillDG();
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
+            }
+        }
 
-        //    }
-        //}
+        #endregion
+
+        #region ComponentsPanel
+        private void EditPanel_Edit(object sender, EventArgs e)
+        {
+            try
+            {
+                if (((Button)sender).Name.Split('_')[0] == "Add")
+                {
+                    ComPopup.DataContext = new ProductComponents() { };
+                    SumbitBTN.Tag = "Add";
+                }
+                else
+                {
+                    SumbitBTN.Tag = "Edit";
+                    ComPopup.DataContext = ComponentsLB.SelectedItem;
+                }
+                ComPopup.IsOpen = true;
+
+            }
+            catch
+            {
+
+            }
+        }
+        private void EditPanel_Delete(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ComponentsLB.SelectedIndex != -1)
+                {
+
+                    if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
+                    {
+                        ((Product)LB.SelectedItem).ProductComponents.Remove((ProductComponents)ComponentsLB.SelectedItem);
+                        DB.SaveChanges();
+                        FillLB();
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                var ProductComs = ComPopup.DataContext as ProductComponents;
+                if (ProductComs.Id == 0) { ((Product)LB.SelectedItem).ProductComponents.Add(ProductComs); }
+                DB.SaveChanges();
+                if ((bool)New.IsChecked)
+                {
+                    ComPopup.DataContext = new Product();
+                }
+                else
+                {
+                    ComPopup.IsOpen = false;
+                }
+                Confirm.Check(true);
+                FillLB();
+            }
+            catch
+            {
+                Confirm.Check(false);
+            }
+        }
+
+        private void FillComponentsLB()
+        {
+            try
+            {
+                ComponentsLB.ItemsSource = ((Product)LB.SelectedItem).ProductComponents;
+            }
+            catch
+            {
+
+            }
+        }
+
+        #endregion
+        private void FillLB(object sender, EventArgs e)
+        {
+            FillLB();
+        }
+
+        private void Categories_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Categories c = new Categories(CategoryTypes.Product);
+                c.ShowDialog();
+                InitializeLookups();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                FillComponentsLB();
+                var product = LB.SelectedItem as Product;
+                if (product.Image != null)
+                    ProductImg.Source = ImageByteConverter.byteArrayToImage(product.Image);
+                else
+                    ProductImg.Source = new BitmapImage(new Uri("/Images/question_mark_icon.jpg", UriKind.Relative));
+            }
+            catch
+            {
+
+            }
+        }
 
 
-        //private void FillDG(object sender, EventArgs e)
-        //{
-        //    FillDG();
-        //}
-
-        //private void pop_Closed(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        //pop.DataContext = null;
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //}
-
-        //private void Save_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        var Component = pop.DataContext as Component;
-        //        if (Component.Id == 0) { DB.Components.Add(Component); }
-        //        DB.SaveChanges();
-        //        if ((bool)New.IsChecked)
-        //        {
-        //            pop.DataContext = new Component();
-        //        }
-        //        else
-        //        {
-        //            pop.IsOpen = false;
-        //        }
-        //        Confirm.Check(true);
-        //        FillDG();
-        //    }
-        //    catch
-        //    {
-        //        Confirm.Check(false);
-        //    }
-        //}
-        //private void Categories_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Categories c = new Categories(CategoryTypes.Compontent);
-        //        c.ShowDialog();
-        //        InitializeLookups();
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //}
 
 
     }

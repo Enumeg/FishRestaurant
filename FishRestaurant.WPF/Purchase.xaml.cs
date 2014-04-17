@@ -236,18 +236,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-        private void Component_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-        }
-
         private void Details_DG_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             try
@@ -267,7 +255,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void Paid_TB_TextChanged(object sender, TextChangedEventArgs e)
         {
             try

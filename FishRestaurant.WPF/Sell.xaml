@@ -7,7 +7,7 @@
       Background="{StaticResource Page_Background}" 
       Loaded="Page_Loaded">
     
-    <Grid Name="Main_GD">
+    <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition Width="*" />

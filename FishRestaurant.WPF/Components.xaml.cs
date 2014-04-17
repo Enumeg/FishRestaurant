@@ -27,9 +27,9 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                var categories = DB.Categories.OrderBy(c => c.Name).ToList();
+                var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Compontent).OrderBy(c => c.Name).ToList();
                 categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
-                CategoryCB.ItemsSource = DB.Categories.OrderBy(c => c.Name).ToList();
+                CategoryCB.ItemsSource = DB.Categories.Where(c => c.Type == CategoryTypes.Compontent).OrderBy(c => c.Name).ToList();
                 CategorySearchCB.ItemsSource = categories;
             }
             catch

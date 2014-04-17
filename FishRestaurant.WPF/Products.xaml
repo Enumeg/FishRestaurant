@@ -5,7 +5,7 @@
         xmlns:S="clr-namespace:Source;assembly=Source" 
         FlowDirection="RightToLeft"
         Background="{StaticResource Page_Background}">
-    <Grid Name="Main_GD" Background="Transparent">
+    <!--<Grid Name="Main_GD" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
             <RowDefinition Height="*" />
@@ -86,5 +86,5 @@
             <S:EditPanel Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
             <Button Grid.Column="1" Style="{StaticResource Panel_Button}" Content="الفئات" Click="Categories_Click" Tag="/FishRestaurant.WPF;component/Images/Theme.ico" />
         </Grid>
-    </Grid>
+    </Grid>-->
 </Page>

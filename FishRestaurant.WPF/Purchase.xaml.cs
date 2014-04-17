@@ -16,15 +16,17 @@ namespace FishRestaurant.WPF
     public partial class Purchases : Page
     {
         FRContext DB;
-        public Purchases()
+        Transaction_Types Type;
+        decimal Amount;
+        public Purchases(Transaction_Types type)
         {
             InitializeComponent();
             DB = new FRContext();
+            Type = type;
             FillLB();
             InitializeLookups();
             UnitCB.ItemsSource = Enum.GetValues(typeof(Units));
         }
-
         private void InitializeLookups()
         {
             try
@@ -46,7 +48,7 @@ namespace FishRestaurant.WPF
             try
             {
 
-                var query = DB.Purchases.AsQueryable();
+                var query = DB.Purchases.Where(p => p.Type == Type);
                 if (SupplierSearch.SelectedIndex > 0) { query = query.Where(p => p.SupplierId == (int)SupplierSearch.SelectedValue); }
                 if (DateSearch.Text != "")
                 {
@@ -75,9 +77,9 @@ namespace FishRestaurant.WPF
                 Details_DG.IsReadOnly = false;
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
-                   
-                    LB.SelectedIndex = -1;                    
-                    ViewGrid.DataContext = new Purchase() { Date = DateTime.Now.Date, Type = Transaction_Types.In };
+
+                    LB.SelectedIndex = -1;
+                    ViewGrid.DataContext = new Purchase() { Date = DateTime.Now.Date, Type = Type };
                     Form.Set_Style(InfoGrid, Operations.Add);
                     Form.Set_Style(TotalsGrid, Operations.Add);
                     GetNumber();
@@ -103,6 +105,12 @@ namespace FishRestaurant.WPF
 
                     if (Message.Show("هل تريد حذف هذه الفاتورة", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                     {
+                        decimal amount;
+                        foreach (var p in ((Purchase)LB.SelectedItem).PurchaseDetails)
+                        {
+                            amount = Type == Transaction_Types.In ? p.Amount : p.Amount * -1;
+                            DB.Components.Find(p.ComponentId).Stock -= amount;
+                        }
                         DB.Purchases.Remove((Purchase)LB.SelectedItem);
                         DB.SaveChanges();
                         FillLB();
@@ -138,6 +146,7 @@ namespace FishRestaurant.WPF
                 Form.Set_Style(TotalsGrid, Operations.View);
                 Details_DG.ColumnHeaderHeight = 32;
                 Details_GD.RowDefinitions[1].Height = new GridLength(0);
+                LB.SelectedIndex = -1;
 
             }
             catch
@@ -145,7 +154,6 @@ namespace FishRestaurant.WPF
                 Confirm.Check(false);
             }
         }
-
         private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -157,26 +165,30 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void FillLB(object sender, EventArgs e)
         {
             FillLB();
         }
-
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                decimal amount;
+                var PurchaseDetail = (PurchaseDetail)EditGrid.DataContext;
                 if (AddBTN.Content.ToString() == "Add")
                 {
-                    var PurchaseDetail = (PurchaseDetail)EditGrid.DataContext;
-                    var oldPurchaseDetail = ((Purchase)ViewGrid.DataContext).PurchaseDetails.FirstOrDefault(p => p.Component== PurchaseDetail.Component && p.Unit == PurchaseDetail.Unit);
+                    amount = Type == Transaction_Types.In ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;                    
+                    var oldPurchaseDetail = ((Purchase)ViewGrid.DataContext).PurchaseDetails.FirstOrDefault(p => p.Component == PurchaseDetail.Component && p.Unit == PurchaseDetail.Unit);
                     if (oldPurchaseDetail != null) { oldPurchaseDetail.Amount += PurchaseDetail.Amount; }
                     else
                         ((Purchase)ViewGrid.DataContext).PurchaseDetails.Add(PurchaseDetail);
                 }
+                else
+                {
+                    amount = Type == Transaction_Types.In ? PurchaseDetail.Amount -Amount   : Amount - PurchaseDetail.Amount;
+                }
                 AddBTN.Content = "Add";
-
+                DB.Components.Find(PurchaseDetail.Component.Id).Stock += amount;
                 Total_TB.Text = Paid_TB.Text = ((Purchase)ViewGrid.DataContext).PurchaseDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 Details_DG.ItemsSource = null;
                 Details_DG.SetBinding(DataGrid.ItemsSourceProperty, "PurchaseDetails");
@@ -195,6 +207,7 @@ namespace FishRestaurant.WPF
                 {
                     EditGrid.DataContext = Details_DG.SelectedItem;
                     AddBTN.Content = "Edit";
+                    Amount = ((PurchaseDetail)Details_DG.SelectedItem).Amount;
                 }
                 else
                 {
@@ -207,7 +220,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void GetNumber()
         {
             try
@@ -224,7 +236,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void Component_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -243,7 +254,10 @@ namespace FishRestaurant.WPF
             {
                 if (!Details_DG.IsReadOnly)
                 {
-                    ((Purchase)ViewGrid.DataContext).PurchaseDetails.Remove((PurchaseDetail)EditGrid.DataContext);
+                    var PurchaseDetail = (PurchaseDetail)EditGrid.DataContext;
+                    var amount = Type == Transaction_Types.In ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;
+                    DB.Components.Find(PurchaseDetail.Component.Id).Stock -= amount;
+                    ((Purchase)ViewGrid.DataContext).PurchaseDetails.Remove(PurchaseDetail);
                     Details_DG.ItemsSource = null;
                     Details_DG.SetBinding(DataGrid.ItemsSourceProperty, "PurchaseDetails");
                 }
@@ -258,8 +272,8 @@ namespace FishRestaurant.WPF
         {
             try
             {
-              var Purchase =((Purchase)ViewGrid.DataContext);
-              Rest_TB.Text = (Purchase.Total - Purchase.Paid).ToString("0.00");
+                var Purchase = ((Purchase)ViewGrid.DataContext);
+                Rest_TB.Text = (Purchase.Total - Purchase.Paid).ToString("0.00");
             }
             catch
             {

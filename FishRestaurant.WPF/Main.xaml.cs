@@ -22,7 +22,7 @@ namespace FishRestaurant.WPF
         public Main()
         {
             InitializeComponent();
-            frame.Navigate(new Components());
+            frame.Navigate(new Purchases( Model.Entities.Transaction_Types.In));
         }
     }
 }

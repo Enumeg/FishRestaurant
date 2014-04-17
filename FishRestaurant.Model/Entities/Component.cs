@@ -13,15 +13,18 @@ namespace FishRestaurant.Model.Entities
         public Component()
         {
             Buy_Details = new List<PurchaseDetail>();
+            ProductComponents = new List<ProductComponents>();
         }
         public int Id { get; set; }
         [MaxLength(500), Column(TypeName = "varchar"), Required]
         public string Name { get; set; }
         public decimal AmountLimit { get; set; }
         public decimal Stock { get; set; }
+        [NotMapped]
         public int Status { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<PurchaseDetail> Buy_Details { get; set; }
+        public virtual ICollection<ProductComponents> ProductComponents { get; set; }
     }
 }

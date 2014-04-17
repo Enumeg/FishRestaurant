@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FishRestaurant.Model.Entities
 {
     public enum CategoryTypes { Compontent, Product }
-    public enum Transaction_Types { In, Out }
-    public enum Units { KG, GM }
+    public enum Transaction_Types : byte { In, Out }
+    public enum Units : byte { KG, GM }
 
 }

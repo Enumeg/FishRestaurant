@@ -141,7 +141,6 @@
     <Compile Include="Styles\Window.xaml.cs">
       <DependentUpon>Window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Transaction.cs" />
     <Compile Include="Transfers.xaml.cs">
       <DependentUpon>Transfers.xaml</DependentUpon>
     </Compile>

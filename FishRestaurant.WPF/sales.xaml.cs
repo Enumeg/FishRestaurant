@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FishRestaurant.Model.Entities;
+using FishRestaurant.WPF.Services;
 using Source;
 
 
@@ -187,8 +188,10 @@ namespace FishRestaurant.WPF
                         oldPurchaseDetail.Amount += SaleDetail.Amount;
                         oldPurchaseDetail.OnPropertyChanged("Amount");
                     }
-
-                    SaleDetails.Add(SaleDetail);
+                    else
+                    {
+                        SaleDetails.Add(SaleDetail);
+                    }
                 }
                 else
                 {
@@ -196,6 +199,7 @@ namespace FishRestaurant.WPF
                 }
                 AddBTN.Content = "Add";
                 SaleDetail.Total = Math.Round(SaleDetail.Amount * SaleDetail.Price, 2);
+                SaleDetail.OnPropertyChanged("Total");
                 Paid_TB.Text = Total_TB.Text = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 EditGrid.DataContext = new SaleDetail() { Amount = 1 };
             }

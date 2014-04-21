@@ -61,7 +61,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <DataGrid Grid.RowSpan="3" Style="{StaticResource Details_DataGrid}" Name="Details_DG" ColumnHeaderHeight="32" CanUserDeleteRows="False"
-                        ItemsSource="{Binding Path=TransactionDetails}" SelectionChanged="Details_DG_SelectionChanged" IsReadOnly="True"
+                        ItemsSource="{Binding Path=SaleDetails}" SelectionChanged="Details_DG_SelectionChanged" IsReadOnly="True"
                         PreviewKeyDown="Details_DG_PreviewKeyDown">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*" Binding="{Binding Path=Product.Name}" Header="المنتج" />

@@ -16,7 +16,7 @@ namespace FishRestaurant.WPF
         public Components()
         {
             InitializeComponent();
-           
+
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -52,7 +52,7 @@ namespace FishRestaurant.WPF
             {
                 var query = DB.Components.Where(c => c.Name.StartsWith(ComponentSearchTB.Text));
                 if (CategorySearchCB.SelectedIndex > 0) { query = query.Where(c => c.CategoryId == (int)CategorySearchCB.SelectedValue); }
-                ComponentsDG.ItemsSource = query.OrderBy(c => c.Name).ToList().Select(c => {c.Status = c.Stock > c.AmountLimit ? 1 : c.Stock == c.AmountLimit ? 0 : -1; return c;});
+                ComponentsDG.ItemsSource = query.OrderBy(c => c.Name).ToList();
             }
             catch
             {
@@ -152,6 +152,7 @@ namespace FishRestaurant.WPF
             }
         }
 
-        
+      
+
     }
 }

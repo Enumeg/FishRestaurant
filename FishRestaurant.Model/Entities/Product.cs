@@ -12,6 +12,8 @@ namespace FishRestaurant.Model.Entities
         public Product()
         {
             ProductComponents = new ObservableCollection<ProductComponents>();
+            ProductsDamage = new List<ProductDamage>();
+            SaleDetails = new List<SaleDetail>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,5 +22,7 @@ namespace FishRestaurant.Model.Entities
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<ProductComponents> ProductComponents { get; set; }
+        public virtual ICollection<ProductDamage> ProductsDamage { get; set; }
+        public virtual ICollection<SaleDetail> SaleDetails { get; set; }
     }
 }

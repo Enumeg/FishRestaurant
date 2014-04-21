@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FishRestaurant.Model.Entities;
 
-namespace FishRestaurant.WPF
+namespace FishRestaurant.WPF.Services
 {
    public class TransactionsService
     {

@@ -15,6 +15,7 @@ namespace FishRestaurant.WPF
     public partial class ComponentsDamage : Page
     {
         decimal amount;
+        Units Unit;
         FRContext DB;
         public ComponentsDamage()
         {
@@ -85,6 +86,7 @@ namespace FishRestaurant.WPF
                     var ComponentDamage = ComponentsDamageDG.SelectedItem as ComponentDamage;
                     pop.DataContext = ComponentDamage;
                     amount = ComponentDamage.Amonut;
+                    Unit = ComponentDamage.Unit;
                 }
                 pop.IsOpen = true;
 
@@ -104,7 +106,8 @@ namespace FishRestaurant.WPF
                     if (Message.Show("هل تريد حذف هذا التالف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                     {
                         var ComponentDamage = (ComponentDamage)ComponentsDamageDG.SelectedItem;
-                        DB.Components.Find(ComponentDamage.Component.Id).Stock += ComponentDamage.Amonut;
+                        var Amount = ComponentDamage.Unit == Model.Entities.Units.جرام ? ComponentDamage.Amonut * 0.001m : ComponentDamage.Amonut;
+                        //DB.Components.Find(ComponentDamage.Component.Id).Stock += Amount;
                         DB.ComponentsDamage.Remove(ComponentDamage);
                         DB.SaveChanges();
                         FillDG();
@@ -144,13 +147,14 @@ namespace FishRestaurant.WPF
                 if (ComponentDamage.Id == 0)
                 {
                     DB.ComponentsDamage.Add(ComponentDamage);
-                    amount = ComponentDamage.Amonut;
+                    amount = ComponentDamage.Unit == Model.Entities.Units.جرام ? ComponentDamage.Amonut * 0.001m : ComponentDamage.Amonut;
                 }
                 else
                 {
-                    amount = ComponentDamage.Amonut - amount;
+                    if (Unit == Model.Entities.Units.جرام) { amount *= 0.001m; }
+                    amount = (ComponentDamage.Unit == Model.Entities.Units.جرام ? ComponentDamage.Amonut * 0.001m : ComponentDamage.Amonut) - amount;
                 }
-                DB.Components.Find(ComponentDamage.Component.Id).Stock -= amount;
+                //DB.Components.Find(ComponentDamage.Component.Id).Stock -= amount;
                 DB.SaveChanges();
                 if ((bool)New.IsChecked)
                 {

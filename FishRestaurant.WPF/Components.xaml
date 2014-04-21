@@ -53,7 +53,8 @@
                 <DataGridTextColumn Header="الفئة" Binding="{Binding Path=Category.Name}" />
                 <DataGridTextColumn Header="الصنف" Binding="{Binding Path=Name}" Width="*" />
                 <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=AmountLimit}" />
-                <DataGridTextColumn Header="الرصيد" Binding="{Binding Path=Stock}" />
+                <DataGridTextColumn Header="رصيد المخزن" Binding="{Binding Path=StoreStock}" />
+                <DataGridTextColumn Header="رصيد المحل" Binding="{Binding Path=ShopStock}" />
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">

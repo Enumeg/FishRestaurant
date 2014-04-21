@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Collections.ObjectModel;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using FishRestaurant.WPF.Services;
 
 namespace FishRestaurant.WPF
 {
@@ -20,6 +21,7 @@ namespace FishRestaurant.WPF
         FRContext DB;
         Transaction_Types Type;
         decimal Amount;
+        Units Unit;
         public Purchases(Transaction_Types type)
         {
             InitializeComponent();
@@ -41,7 +43,7 @@ namespace FishRestaurant.WPF
         private void Initialize()
         {
             try
-            {               
+            {
                 DB = new FRContext();
                 ComponentCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 PersonCB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Supplier).OrderBy(c => c.Name).ToList();
@@ -113,12 +115,13 @@ namespace FishRestaurant.WPF
 
                     if (Message.Show("هل تريد حذف هذه الفاتورة", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                     {
-                        decimal amount;
-                        foreach (var p in ((Transaction)LB.SelectedItem).PurchaseDetails)
-                        {
-                            amount = Type == Transaction_Types.Buy ? p.Amount : p.Amount * -1;
-                            DB.Components.Find(p.ComponentId).Stock -= amount;
-                        }
+                        //decimal amount;
+                        //foreach (var p in ((Transaction)LB.SelectedItem).PurchaseDetails)
+                        //{
+                        //    amount = Type == Transaction_Types.Buy ? p.Amount : p.Amount * -1;
+                        //    if (p.Unit == Units.جرام) { amount *= 0.001m; }
+                        //    DB.Components.Find(p.ComponentId).Stock -= amount;
+                        //}
                         DB.Transactions.Remove((Transaction)LB.SelectedItem);
                         DB.SaveChanges();
                         FillLB();
@@ -193,6 +196,7 @@ namespace FishRestaurant.WPF
                 if (AddBTN.Content.ToString() == "Add")
                 {
                     amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;
+                    if (PurchaseDetail.Unit == Units.جرام) { amount *= 0.001m; }
                     var oldPurchaseDetail = PurchaseDetails.FirstOrDefault(p => p.Component.Id == PurchaseDetail.Component.Id && p.Unit == PurchaseDetail.Unit && p.Price == PurchaseDetail.Price);
                     if (oldPurchaseDetail != null)
                     {
@@ -204,13 +208,21 @@ namespace FishRestaurant.WPF
                 }
                 else
                 {
+                    Amount = Unit == Units.جرام ? Amount *= 0.001m : Amount;
+                    if (PurchaseDetail.Unit == Units.جرام)
+                    {
+                        amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount * 0.001m - Amount : Amount - PurchaseDetail.Amount * 0.001m;
+                    }
+                    else
+                    {
+                        amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount - Amount : Amount - PurchaseDetail.Amount;
+                    }
                     PurchaseDetail.OnPropertyChanged("Amount");
-                    amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount - Amount : Amount - PurchaseDetail.Amount;
                 }
                 AddBTN.Content = "Add";
                 PurchaseDetail.Total = Math.Round(PurchaseDetail.Amount * PurchaseDetail.Price, 2);
                 PurchaseDetail.OnPropertyChanged("Total");
-                DB.Components.Find(PurchaseDetail.Component.Id).Stock += amount;
+                //DB.Components.Find(PurchaseDetail.Component.Id).Stock += amount;
                 Paid_TB.Text = Total_TB.Text = PurchaseDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 EditGrid.DataContext = new PurchaseDetail() { Amount = 1 };
             }
@@ -227,7 +239,9 @@ namespace FishRestaurant.WPF
                 {
                     EditGrid.DataContext = Details_DG.SelectedItem;
                     AddBTN.Content = "Edit";
-                    Amount = ((PurchaseDetail)Details_DG.SelectedItem).Amount;
+                    var PurchaseDetail = ((PurchaseDetail)Details_DG.SelectedItem);
+                    Amount = PurchaseDetail.Amount;
+                    Unit = PurchaseDetail.Unit;
                 }
                 else
                 {
@@ -249,7 +263,8 @@ namespace FishRestaurant.WPF
                     var PurchaseDetail = (PurchaseDetail)EditGrid.DataContext;
                     var PurchaseDetails = ((Transaction)ViewGrid.DataContext).PurchaseDetails;
                     var amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;
-                    DB.Components.Find(PurchaseDetail.Component.Id).Stock -= amount;
+                    if (PurchaseDetail.Unit == Units.جرام) { amount *= 0.001m; }
+                    //DB.Components.Find(PurchaseDetail.Component.Id).Stock -= amount;
                     PurchaseDetails.Remove(PurchaseDetail);
                     Paid_TB.Text = Total_TB.Text = PurchaseDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 }

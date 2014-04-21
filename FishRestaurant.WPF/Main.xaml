@@ -3,6 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Main" Height="300" Width="300" WindowState="Maximized">
     <Grid>
-        <Frame Name="frame"></Frame>
+        <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="4*"/>
+        <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Frame Name="frame" Grid.Column="0" NavigationUIVisibility="Hidden" BorderBrush="Black" BorderThickness="0,0,2,0"></Frame>
+        <StackPanel Grid.Column="1" Name="Buttons" Button.Click="Buttons_Click">
+            <Button />
+        </StackPanel>
     </Grid>
 </Window>

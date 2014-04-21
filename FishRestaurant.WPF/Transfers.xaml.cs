@@ -19,17 +19,27 @@ namespace FishRestaurant.WPF
         public Transfers(Transaction_Types type)
         {
             InitializeComponent();
-            DB = new FRContext();
-            Type = type;
-            InitializeLookups();
-            FillLB();
+            Type = type; Title = type == Transaction_Types.Out ? "سحب أصناف" : "تخزين أصناف";
         }
-        private void InitializeLookups()
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {              
+                Initialize();          
+            }
+            catch
+            {
+
+            }
+        }
+        private void Initialize()
         {
             try
             {
+                DB = new FRContext();                   
                 ComponentCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 UnitCB.ItemsSource = Enum.GetValues(typeof(Units));
+                FillLB();
             }
             catch
             {
@@ -40,14 +50,10 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                var query = DB.Transfers.Where(p => p.Type == Type);                
-                if (DateSearch.Text != "")
-                {
-                    var date = DateSearch.Value.Value.Date;
-                    query = query.Where(p => p.Date == date);
-                }
+                var query = DB.Transfers.Where(p => p.Type == Type);
+                if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }                                      
+                if (DateSearch.Text != ""){query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }                                      
                 LB.ItemsSource = query.Include(p => p.TransferDetails).OrderBy(p => p.Number).ToList();
-
             }
             catch
             {
@@ -69,9 +75,9 @@ namespace FishRestaurant.WPF
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
                     LB.SelectedIndex = -1;
-                    ViewGrid.DataContext = new Transfer() { Date = DateTime.Now.Date, Type = Type };
+                    ViewGrid.DataContext = new Transfer() { Date = DateDTP.Value.Value, Type = Type };
                     Form.Set_Style(InfoGrid, Operations.Add);
-                    GetNumber();
+                    Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
                 }
                 else
                 {
@@ -124,6 +130,11 @@ namespace FishRestaurant.WPF
                     DB.SaveChanges();
                     Confirm.Check(true);
                 }
+                else
+                {
+                    DB.Dispose();
+                    Initialize();
+                }
                 Details_DG.IsReadOnly = true;
                 LB.IsEnabled = true;
                 FillLB();
@@ -153,7 +164,8 @@ namespace FishRestaurant.WPF
         }
         private void FillLB(object sender, EventArgs e)
         {
-            FillLB();
+            if (this.IsLoaded)
+                FillLB();
         }
         private void Add_Click(object sender, RoutedEventArgs e)
         {
@@ -161,16 +173,22 @@ namespace FishRestaurant.WPF
             {
                 decimal amount;
                 var TransferDetail = (TransferDetail)EditGrid.DataContext;
+                var TransferDetails = ((Transfer)ViewGrid.DataContext).TransferDetails;
                 if (AddBTN.Content.ToString() == "Add")
                 {
                     amount = Type == Transaction_Types.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
-                    var oldTransferDetail = ((Transfer)ViewGrid.DataContext).TransferDetails.FirstOrDefault(p => p.Component == TransferDetail.Component && p.Unit == TransferDetail.Unit);
-                    if (oldTransferDetail != null) { oldTransferDetail.Amount += TransferDetail.Amount; }
+                    var oldTransferDetail = TransferDetails.FirstOrDefault(p => p.Component.Id == TransferDetail.Component.Id && p.Unit == TransferDetail.Unit);
+                    if (oldTransferDetail != null) 
+                    { 
+                        oldTransferDetail.Amount += TransferDetail.Amount;
+                        oldTransferDetail.OnPropertyChanged("Amount");
+                    }
                     else
                         ((Transfer)ViewGrid.DataContext).TransferDetails.Add(TransferDetail);
                 }
                 else
                 {
+                    TransferDetail.OnPropertyChanged("Amount");
                     amount = Type == Transaction_Types.In ? TransferDetail.Amount - Amount : Amount - TransferDetail.Amount;
                 }
                 AddBTN.Content = "Add";
@@ -203,22 +221,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-        private void GetNumber()
-        {
-            try
-            {
-                if (!LB.IsEnabled)
-                {
-                    var date = DateDTP.Value.Value.Date;
-                    var num = DB.Transfers.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month);
-                    Number.Text = num.Count() != 0 ? (num.Max(p => p.Number) + 1).ToString() : string.Format("{0}{1}001", date.Year, date.Month);
-                }
-            }
-            catch
-            {
-
-            }
-        }
         private void Details_DG_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             try
@@ -236,7 +238,5 @@ namespace FishRestaurant.WPF
 
             }
         }
-
-
     }
 }

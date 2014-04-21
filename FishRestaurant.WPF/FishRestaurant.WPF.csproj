@@ -108,14 +108,14 @@
     <Compile Include="Components.xaml.cs">
       <DependentUpon>Components.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Customers.xaml.cs">
-      <DependentUpon>Customers.xaml</DependentUpon>
+    <Compile Include="People.xaml.cs">
+      <DependentUpon>People.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Damage_Component.xaml.cs">
-      <DependentUpon>Damage_Component.xaml</DependentUpon>
+    <Compile Include="ComponentDamage.xaml.cs">
+      <DependentUpon>ComponentDamage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Damage_Product.xaml.cs">
-      <DependentUpon>Damage_Product.xaml</DependentUpon>
+    <Compile Include="ProductDamage.xaml.cs">
+      <DependentUpon>ProductDamage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
@@ -141,9 +141,7 @@
     <Compile Include="Styles\Window.xaml.cs">
       <DependentUpon>Window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Suppliers.xaml.cs">
-      <DependentUpon>Suppliers.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Transaction.cs" />
     <Compile Include="Transfers.xaml.cs">
       <DependentUpon>Transfers.xaml</DependentUpon>
     </Compile>
@@ -187,15 +185,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Customers.xaml">
+    <Page Include="People.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Damage_Component.xaml">
+    <Page Include="ComponentDamage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Damage_Product.xaml">
+    <Page Include="ProductDamage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -274,10 +272,6 @@
     <Page Include="Styles\Window.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Suppliers.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Transfers.xaml">
       <SubType>Designer</SubType>

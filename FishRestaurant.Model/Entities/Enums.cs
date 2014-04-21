@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace FishRestaurant.Model.Entities
 {
-    public enum CategoryTypes { Compontent, Product }
-    public enum Transaction_Types : byte { In, Out }
-    public enum Units : byte { كيلو, جرام }
+    public enum CategoryTypes : sbyte { Compontent, Product }
+    public enum Transaction_Types : sbyte { Buy, ReBuy, Sell, ReSell, In, Out }
+    public enum Units : sbyte { كيلو, جرام }
+    public enum PersonTypes : sbyte { Customer, Supplier }
 
 }

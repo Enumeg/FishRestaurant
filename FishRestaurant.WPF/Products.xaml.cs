@@ -21,10 +21,20 @@ namespace FishRestaurant.WPF
 
         public Products()
         {
-            InitializeComponent();
-            DB = new FRContext();
-            FillLB();
-            InitializeLookups();
+            InitializeComponent();           
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DB = new FRContext();
+                FillLB();
+                InitializeLookups();
+            }
+            catch
+            {
+
+            }
         }
         private void InitializeLookups()
         {
@@ -225,7 +235,6 @@ namespace FishRestaurant.WPF
                 Confirm.Check(false);
             }
         }
-
         private void FillComponentsLB()
         {
             try
@@ -243,7 +252,6 @@ namespace FishRestaurant.WPF
         {
             FillLB();
         }
-
         private void Categories_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -257,7 +265,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -274,9 +281,5 @@ namespace FishRestaurant.WPF
 
             }
         }
-
-
-
-
     }
 }

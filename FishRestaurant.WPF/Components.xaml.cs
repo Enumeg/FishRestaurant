@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using Source;
 using FishRestaurant.Model.Entities;
+using Source;
 
 namespace FishRestaurant.WPF
 {
@@ -18,11 +16,21 @@ namespace FishRestaurant.WPF
         public Components()
         {
             InitializeComponent();
-            DB = new FRContext();
-            FillDG();
-            InitializeLookups();
+           
         }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DB = new FRContext();
+                FillDG();
+                InitializeLookups();
+            }
+            catch
+            {
 
+            }
+        }
         private void InitializeLookups()
         {
             try
@@ -52,7 +60,6 @@ namespace FishRestaurant.WPF
             }
 
         }
-
         private void EditPanel_Edit(object sender, EventArgs e)
         {
             try
@@ -73,7 +80,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void EditPanel_Delete(object sender, EventArgs e)
         {
             try
@@ -94,13 +100,10 @@ namespace FishRestaurant.WPF
 
             }
         }
-
-
         private void FillDG(object sender, EventArgs e)
         {
             FillDG();
         }
-
         private void pop_Closed(object sender, EventArgs e)
         {
             try
@@ -112,7 +115,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             try

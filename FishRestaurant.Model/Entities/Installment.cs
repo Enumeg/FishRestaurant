@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FishRestaurant.Model.Entities
 {
-    public class Supplier : Person
+    public class Installment
     {
-        public decimal Balance { get; set; }
-    }
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Value { get; set; }      
+    }   
 }

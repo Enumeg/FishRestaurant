@@ -12,4 +12,15 @@ namespace FishRestaurant.Model.Entities
         public DateTime Date { get; set; }
         public decimal Amonut { get; set; }
     }
+    public class ComponentDamage : Damage
+    {
+        public int ComponentId { get; set; }
+        public virtual Component Component { get; set; }
+        public Units Unit { get; set; }
+    }
+    public class ProductDamage : Damage
+    {
+        public int ProductId { get; set; }
+        public virtual Product Product { get; set; }
+    }
 }

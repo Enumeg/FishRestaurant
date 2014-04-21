@@ -4,12 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -24,27 +18,29 @@ using FishRestaurant.Model.Entities;
 namespace FishRestaurant.WPF
 {
     /// <summary>
-    /// Interaction logic for Suppliers.xaml
+    /// Interaction logic for People.xaml
     /// </summary>
-    public partial class Suppliers : Page
+    public partial class People : Page
     {
         FRContext DB;
-
-        public Suppliers()
+        PersonTypes Type;
+        public People(PersonTypes type)
         {
             InitializeComponent();
             DB = new FRContext();
-            Fill_LB();
+            Type = type;
+            Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";
+            FillLB();
         }
-
-
-        private void Fill_LB()
+        private void FillLB()
         {
             try
             {
                 if (LB.IsEnabled)
                 {
-                    LB.ItemsSource = DB.Suppliers.Where(c => c.Name.StartsWith(NameSearchTB.Text) && c.Mobile.StartsWith(MobileSearchTB.Text)).OrderBy(o => o.Name).ToList();
+                    var query = DB.People.Where(c => c.Type == Type && c.Name.StartsWith(NameSearchTB.Text));
+                    if(MobileSearchTB.Text != ""){query = query.Where(c=>c.Mobile.StartsWith(MobileSearchTB.Text));}
+                    LB.ItemsSource = query.OrderBy(o => o.Name).ToList();
                 }
             }
             catch
@@ -52,12 +48,7 @@ namespace FishRestaurant.WPF
 
 
             }
-            // End Fill
         }
-
-
-
-
         private void EditPanel_Edit(object sender, EventArgs e)
         {
             try
@@ -65,8 +56,14 @@ namespace FishRestaurant.WPF
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
                     LB.SelectedIndex = -1;
+                    Form.Set_Style(MainGrid, Operations.Add);
+                    MainGrid.DataContext = new Person() { Balance = 0, Type = Type };
                 }
-
+                else
+                {
+                    Form.Set_Style(MainGrid, Operations.Edit);
+                }
+                Save.Visibility = System.Windows.Visibility.Visible;
                 LB.IsEnabled = false;
             }
             catch
@@ -74,17 +71,16 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void EditPanel_Delete(object sender, EventArgs e)
         {
 
             try
             {
-                if (Message.Show("هل تريد حذف هذا المورد", MessageBoxButton.YesNoCancel, 10) == MessageBoxResult.Yes)
+                if (Message.Show("هل تريد حذف هذا العميل", MessageBoxButton.YesNoCancel, 10) == MessageBoxResult.Yes)
                 {
-                    DB.Suppliers.Remove((Supplier)LB.SelectedItem);
+                    DB.People.Remove((Person)LB.SelectedItem);
                     DB.SaveChanges();
-                    Fill_LB();
+                    FillLB();
                 }
             }
             catch
@@ -92,9 +88,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
-
-
         private void Submit(object sender, EventArgs e)
         {
             try
@@ -103,31 +96,35 @@ namespace FishRestaurant.WPF
                 {
                     if (LB.SelectedIndex == -1)
                     {
-                        DB.Suppliers.Add(new Supplier() { Name = NameTB.Text, Address = AddressTB.Text, Phone = TelephoneTB.Text, Mobile = MobileTB.Text });
+                        DB.People.Add(MainGrid.DataContext as Person);
                     }
-
                     DB.SaveChanges();
                     Confirm.Check(true);
                 }
-
-
-                NameTB.Text = AddressTB.Text = TelephoneTB.Text = MobileTB.Text = "";
+                Form.Set_Style(MainGrid, Operations.View);
+                Save.Visibility = System.Windows.Visibility.Hidden;
                 LB.IsEnabled = true;
-                Fill_LB();
-
-
+                FillLB();
             }
             catch
             {
                 Confirm.Check(false);
             }
         }
-
-        private void FillLB (object sender,  EventArgs e)
+        private void FillLB(object sender, EventArgs e)
         {
-            Fill_LB();
+            FillLB();
         }
+        private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                MainGrid.DataContext = LB.SelectedItem;
+            }
+            catch
+            {
 
-    
+            }
+        }
     }
 }

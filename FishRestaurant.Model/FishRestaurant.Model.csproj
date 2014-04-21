@@ -51,24 +51,23 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\ComponentDamage.cs" />
     <Compile Include="Entities\Damage.cs" />
+    <Compile Include="Entities\Installment.cs" />
     <Compile Include="Entities\ProductComponents.cs" />
-    <Compile Include="Entities\ProductDamage.cs" />
-    <Compile Include="Entities\Purchase.cs" />
     <Compile Include="Entities\PurchaseDetail.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Component.cs" />
-    <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\FRContext.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\Product.cs" />
-    <Compile Include="Entities\Sale.cs" />
     <Compile Include="Entities\SaleDetail.cs" />
-    <Compile Include="Entities\Supplier.cs" />
     <Compile Include="Entities\Transaction.cs" />
     <Compile Include="Entities\TransactionDetail.cs" />
     <Compile Include="Entities\Transfer.cs" />

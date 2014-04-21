@@ -8,8 +8,8 @@ namespace FishRestaurant.Model.Entities
 {
     public class PurchaseDetail : TransactionDetail
     {
-        public int? PurchaseId { get; set; }
-        public virtual Purchase Purchase { get; set; }
+        public int? TransactionId { get; set; }
+        public virtual Transaction Transaction { get; set; }
         public int ComponentId { get; set; }
         public virtual Component Component { get; set; }
         public Units Unit { get; set; }  

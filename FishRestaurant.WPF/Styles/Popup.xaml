@@ -43,7 +43,6 @@
     </Style>
     <Style TargetType="{x:Type Popup}">
         <Setter Property="Placement" Value="Center" />
-        <Setter Property="StaysOpen" Value="False" />
         <Setter Property="PopupAnimation" Value="Fade" />
         <Setter Property="AllowsTransparency" Value="True" />
     </Style>

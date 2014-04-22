@@ -1,5 +1,5 @@
 ﻿<Window x:Class="FishRestaurant.WPF.Categories" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cc="clr-namespace:Source;assembly=Source" Title="الخدمات" Style="{StaticResource Default_Window}"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cc="clr-namespace:Source;assembly=Source" Title="الفئات" Style="{StaticResource Default_Window}"
         Width="300" WindowStartupLocation="CenterScreen">
     <Grid Name="Main_GD">
         <Grid.Style>

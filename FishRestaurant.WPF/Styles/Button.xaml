@@ -143,6 +143,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="Button" x:Key="ImageButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image x:Name="IMG" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter TargetName="IMG" Property="Opacity" Value="0.7" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="IMG" Property="Opacity" Value="0.7" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="IMG" Property="Margin" Value="0,0.3" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="IMG" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type Button}" x:Key="Side">
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="FontFamily" Value="Droid Arabic Naskh" />
@@ -250,7 +273,7 @@
                             <Setter TargetName="b" Property="BorderBrush" Value="#FF5C5C5C" />
                         </Trigger>
                         <DataTrigger Binding="{Binding ElementName=Img,Path=IsMouseOver }" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

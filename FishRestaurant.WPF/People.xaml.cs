@@ -126,5 +126,10 @@ namespace FishRestaurant.WPF
 
             }
         }
+
+        private void GetAccounts(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+
+        }
     }
 }

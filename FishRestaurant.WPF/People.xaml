@@ -3,27 +3,29 @@
         FlowDirection="RightToLeft">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />           
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="4*" />
-        </Grid.ColumnDefinitions>        
-        <Border BorderBrush="Black" BorderThickness="0,0,2,0" ><Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
-                <RowDefinition Height="35" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="35" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Text="الاســــــــــم :" Style="{StaticResource Label_TextBlock}" />
-            <TextBlock Grid.Row="1" Text="الموبابل  :" Style="{StaticResource Label_TextBlock}" />
-            <TextBox Grid.Column="2" Grid.Row="0" Name="NameSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="FillLB" />
-            <TextBox Grid.Column="2" Grid.Row="1" Name="MobileSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="FillLB" />
-            <ListBox Grid.Row="2" Grid.ColumnSpan="2" Name="LB" DisplayMemberPath="Name" SelectionChanged="LB_SelectionChanged"/>
-            <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
-        </Grid></Border>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="0,0,2,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="35" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Text="الاســــــــــم :" Style="{StaticResource Label_TextBlock}" />
+                <TextBlock Grid.Row="1" Text="الموبابل  :" Style="{StaticResource Label_TextBlock}" />
+                <TextBox Grid.Column="2" Grid.Row="0" Name="NameSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="FillLB" />
+                <TextBox Grid.Column="2" Grid.Row="1" Name="MobileSearchTB" Style="{StaticResource Search_TextBox}" TextChanged="FillLB" />
+                <ListBox Grid.Row="2" Grid.ColumnSpan="2" Name="LB" DisplayMemberPath="Name" SelectionChanged="LB_SelectionChanged" />
+                <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
+            </Grid>
+        </Border>
         <Grid Grid.Column="2" Name="Info_GD">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -53,7 +55,7 @@
                 <TextBox Grid.Column="3" Grid.Row="0" Name="TelephoneTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Phone}" />
                 <TextBox Grid.Column="3" Grid.Row="1" Name="MobileTB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Mobile}" />
                 <TextBox Grid.Column="1" Grid.Row="2" Name="Balance_TB" Style="{StaticResource View_TextBox}" Text="{Binding Path=Balance}" />
-                <cc:SavePanel Name="Save" Grid.Row="3" Grid.Column="3" Save="Submit" Cancel="Submit" Visibility="Hidden"/>
+                <cc:SavePanel Name="Save" Grid.Row="3" Grid.Column="3" Save="Submit" Cancel="Submit" Visibility="Hidden" />
             </Grid>
             <Border BorderBrush="White" BorderThickness="0,2,0,0" Grid.Row="1">
                 <Grid>
@@ -66,8 +68,8 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Style="{StaticResource Label_TextBlock}" Text="من :" />
                     <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="إلى :" />
-                    <ex:DateTimePicker Grid.Column="1" Style="{StaticResource Search_DateTimePicker}" Name="From_DTP" />
-                    <ex:DateTimePicker Grid.Column="3" Style="{StaticResource Search_DateTimePicker}" Name="To_DTP" />
+                    <ex:DateTimePicker Grid.Column="1" Style="{StaticResource Search_DateTimePicker}" ValueChanged="GetAccounts" Name="From_DTP" />
+                    <ex:DateTimePicker Grid.Column="3" Style="{StaticResource Search_DateTimePicker}" ValueChanged="GetAccounts" Name="To_DTP" />
                 </Grid>
             </Border>
             <DataGrid Grid.Row="2" Style="{StaticResource View_DataGrid}" Name="Account_DG">

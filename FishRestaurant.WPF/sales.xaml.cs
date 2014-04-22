@@ -28,8 +28,8 @@ namespace FishRestaurant.WPF
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
-            {              
-                Initialize();                
+            {
+                Initialize();
             }
             catch
             {
@@ -85,7 +85,7 @@ namespace FishRestaurant.WPF
                     LB.SelectedIndex = -1;
                     Form.Set_Style(InfoGrid, Operations.Add);
                     Form.Set_Style(TotalsGrid, Operations.Add);
-                    ViewGrid.DataContext = new Transaction() { Date= DateDTP.Value.Value, Type = Type };
+                    ViewGrid.DataContext = new Transaction() { Date = DateDTP.Value.Value, Type = Type };
                     Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
 
                 }
@@ -274,7 +274,8 @@ namespace FishRestaurant.WPF
             }
         }
 
-
+        private void Search(object sender, EventArgs e)
+        { }
 
     }
 }

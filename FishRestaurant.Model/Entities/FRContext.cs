@@ -5,11 +5,13 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.Entity;
 namespace FishRestaurant.Model.Entities
 {
-
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
    public class FRContext : DbContext
     {
+       
         public FRContext()
             : base("Con")
         {
@@ -23,8 +25,10 @@ namespace FishRestaurant.Model.Entities
         public DbSet<Component> Components { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }       
+        public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
+        public DbSet<Installment> Installments { get; set; }
+
         public DbSet<ComponentDamage> ComponentsDamage { get; set; }
         public DbSet<ProductDamage> ProductsDamage { get; set; }       
 

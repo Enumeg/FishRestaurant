@@ -108,6 +108,9 @@
     <Compile Include="Components.xaml.cs">
       <DependentUpon>Components.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Installments.xaml.cs">
+      <DependentUpon>Installments.xaml</DependentUpon>
+    </Compile>
     <Compile Include="People.xaml.cs">
       <DependentUpon>People.xaml</DependentUpon>
     </Compile>
@@ -181,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Installments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -294,6 +301,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\question_mark_icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

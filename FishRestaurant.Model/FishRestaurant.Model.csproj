@@ -47,7 +47,8 @@
       <HintPath>..\packages\MySql.Data.Entity.EF6.6.8.3\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF6, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.Entity.EF6.6.8.3\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\VS 2013\FishRestaurant\packages\MySql.Data.Entity.EF6.6.8.3\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -74,7 +75,9 @@
     <Compile Include="Entities\TransferDetail.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\Components.cs" />
+    <Compile Include="Services\CustomConfigration.cs" />
     <Compile Include="Services\Transaction.cs" />
+    <Compile Include="ViewModels\Accounts.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

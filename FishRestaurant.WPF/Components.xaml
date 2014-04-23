@@ -53,26 +53,8 @@
                 <DataGridTextColumn Header="الفئة" Binding="{Binding Path=Category.Name}" />
                 <DataGridTextColumn Header="الصنف" Binding="{Binding Path=Name}" Width="*" />
                 <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=AmountLimit}" />
-                <DataGridTextColumn Header="رصيد المخزن" Binding="{Binding Path=StoreStock}" />
-                <DataGridTextColumn Header="رصيد المحل" Binding="{Binding Path=ShopStock}" />
+                <DataGridTextColumn Header="المخزن" Binding="{Binding Path=Stock}" />               
             </DataGrid.Columns>
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Status}" Value="0">
-                            <Setter Property="Background" Value="Yellow" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Status}" Value="1">
-                            <Setter Property="Background" Value="Green" />
-                            <Setter Property="Foreground" Value="White" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Status}" Value="-1">
-                            <Setter Property="Background" Value="Red" />
-                            <Setter Property="Foreground" Value="White" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.RowStyle>
         </DataGrid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

@@ -7,13 +7,13 @@ using FishRestaurant.Model.Entities;
 
 namespace FishRestaurant.Model.Services
 {
-    class ComponentsService
+   public class ComponentsService
     {
         public static decimal GetShopStock(Component component)
-        {
+        {        
             decimal In = 0, Out = 0, stock = 0;
             try
-            {
+            {              
                 var Ins = component.TransferDetails.Where(t => t.Transfer.Type == Transaction_Types.Out);
                 var Outs = component.TransferDetails.Where(t => t.Transfer.Type == Transaction_Types.In);
                 var Coms = component.ProductComponents;
@@ -23,9 +23,10 @@ namespace FishRestaurant.Model.Services
                 {
                     var amount = pc.Unit == Units.جرام ? pc.Amount * 0.001m : pc.Amount;
                     if (pc.Product.ProductsDamage.Count > 0) { Out += pc.Product.ProductsDamage.Sum(p => p.Amonut * amount); }
-                    if (pc.Product.SaleDetails.Count > 0) { Out += pc.Product.SaleDetails.Sum(s => s.Amount * amount); }
+                    if (pc.Product.SaleDetails.Count > 0) { Out += pc.Product.SaleDetails.Where(s=>s.Transaction.Type== Transaction_Types.Sell).Sum(s => s.Amount * amount); }
                 }
                 stock = Math.Round(In - Out, 3);
+               
             }
             catch
             {
@@ -34,7 +35,7 @@ namespace FishRestaurant.Model.Services
             return stock;
         }
         public static decimal GetStock(Component component)
-        {
+        {           
             decimal In = 0, Out = 0, stock = 0;
             try
             {
@@ -50,6 +51,7 @@ namespace FishRestaurant.Model.Services
                 if (Coms.Count() > 0) { Out += Coms.Sum(t => t.Amonut * (t.Unit == Units.جرام ? 0.001m : 1)); }
                 In += component.Stock;
                 stock = Math.Round(In - Out, 3);
+                component.StoreStock = stock;
             }
             catch
             {

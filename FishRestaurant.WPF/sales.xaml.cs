@@ -233,14 +233,10 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (!Details_DG.IsReadOnly)
-                {
-                    var SalesDetails = (SaleDetail)EditGrid.DataContext;
-                    var amount = Type == Transaction_Types.Out ? SalesDetails.Amount : SalesDetails.Amount * -1;
-                    //DB.Components.Find(SalesDetails.Product.Id).Stock -= amount;
-                    ((Transaction)ViewGrid.DataContext).SaleDetails.Remove(SalesDetails);
-                    Details_DG.ItemsSource = null;
-                    Details_DG.SetBinding(DataGrid.ItemsSourceProperty, "SaleDetails");
+                if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
+                {                  
+                    DB.SaleDetails.Remove((SaleDetail)EditGrid.DataContext);
+                    Paid_TB.Text = Total_TB.Text = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 }
             }
             catch

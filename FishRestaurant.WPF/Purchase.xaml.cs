@@ -258,14 +258,15 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (!Details_DG.IsReadOnly)
+                if (!Details_DG.IsReadOnly && e.Key== System.Windows.Input.Key.Delete)
                 {
                     var PurchaseDetail = (PurchaseDetail)EditGrid.DataContext;
                     var PurchaseDetails = ((Transaction)ViewGrid.DataContext).PurchaseDetails;
-                    var amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;
-                    if (PurchaseDetail.Unit == Units.جرام) { amount *= 0.001m; }
-                    //DB.Components.Find(PurchaseDetail.Component.Id).Stock -= amount;
-                    PurchaseDetails.Remove(PurchaseDetail);
+                    //var amount = Type == Transaction_Types.Buy ? PurchaseDetail.Amount : PurchaseDetail.Amount * -1;
+                    //if (PurchaseDetail.Unit == Units.جرام) { amount *= 0.001m; }
+                    ////DB.Components.Find(PurchaseDetail.Component.Id).Stock -= amount;
+                    //PurchaseDetails.Remove(PurchaseDetail);
+                    DB.PurchaseDetails.Remove(PurchaseDetail);
                     Paid_TB.Text = Total_TB.Text = PurchaseDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
                 }
             }

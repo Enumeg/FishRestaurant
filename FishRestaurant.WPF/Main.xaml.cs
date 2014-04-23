@@ -59,6 +59,7 @@ namespace FishRestaurant.WPF
                 pages.Add(new Sales(Model.Entities.Transaction_Types.ReSell));
                 pages.Add(new ComponentsDamage());
                 pages.Add(new ProductsDamage());
+                pages.Add(new Stock());
                 pages.Add(new Installments(Model.Entities.PersonTypes.Supplier));
                 pages.Add(new Installments(Model.Entities.PersonTypes.Customer));
                 foreach (Page p in pages)

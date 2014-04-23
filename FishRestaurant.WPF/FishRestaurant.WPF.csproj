@@ -111,6 +111,12 @@
     <Compile Include="Installments.xaml.cs">
       <DependentUpon>Installments.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Outcome.xaml.cs">
+      <DependentUpon>Outcome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Outcome_Types.xaml.cs">
+      <DependentUpon>Outcome_Types.xaml</DependentUpon>
+    </Compile>
     <Compile Include="People.xaml.cs">
       <DependentUpon>People.xaml</DependentUpon>
     </Compile>
@@ -193,6 +199,14 @@
     <Page Include="Installments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Outcome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Outcome_Types.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="People.xaml">
       <SubType>Designer</SubType>

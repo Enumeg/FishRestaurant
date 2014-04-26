@@ -111,11 +111,11 @@
     <Compile Include="Installments.xaml.cs">
       <DependentUpon>Installments.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Outcome.xaml.cs">
-      <DependentUpon>Outcome.xaml</DependentUpon>
+    <Compile Include="Outcomes.xaml.cs">
+      <DependentUpon>Outcomes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Outcome_Types.xaml.cs">
-      <DependentUpon>Outcome_Types.xaml</DependentUpon>
+    <Compile Include="OutcomeTypes.xaml.cs">
+      <DependentUpon>OutcomeTypes.xaml</DependentUpon>
     </Compile>
     <Compile Include="People.xaml.cs">
       <DependentUpon>People.xaml</DependentUpon>
@@ -200,11 +200,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Outcome.xaml">
+    <Page Include="Outcomes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Outcome_Types.xaml">
+    <Page Include="OutcomeTypes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

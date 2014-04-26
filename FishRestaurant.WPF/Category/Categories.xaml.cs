@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace FishRestaurant.WPF
 {
     /// <summary>
-    /// Interaction logic for Category.xaml
+    /// Interaction logic for Type.xaml
     /// </summary>
     public partial class Categories : Window
     {

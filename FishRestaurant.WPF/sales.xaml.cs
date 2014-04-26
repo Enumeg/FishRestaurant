@@ -23,7 +23,7 @@ namespace FishRestaurant.WPF
         {
             InitializeComponent();
             Type = type;
-            Title = type == Transaction_Types.Sell ? "المبيعات" : "مرتجعات المبيعات";
+            Title = type == Transaction_Types.SellIn ? "المبيعات" : "مرتجعات المبيعات";
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

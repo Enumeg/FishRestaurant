@@ -40,7 +40,7 @@ namespace FishRestaurant.WPF
                 var components = DB.Products.OrderBy(c => c.Name).ToList();
                 components.Insert(0, new Product() { Id = 0, Name = "الكل" });
                 ProductSearch.ItemsSource = components;
-                //categories
+                //Types
                 var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Product).OrderBy(c => c.Name).ToList();
                 categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
                 Category.ItemsSource = categories;

@@ -51,17 +51,17 @@ namespace FishRestaurant.WPF
                 pages.Add(new People(Model.Entities.PersonTypes.Supplier));
                 pages.Add(new Purchases(Model.Entities.Transaction_Types.Buy));
                 pages.Add(new Purchases(Model.Entities.Transaction_Types.ReBuy));
-                pages.Add(new Transfers(Model.Entities.Transaction_Types.Out));
-                pages.Add(new Transfers(Model.Entities.Transaction_Types.In));
+                //pages.Add(new Transfers(Model.Entities.Transaction_Types.Out));
+                //pages.Add(new Transfers(Model.Entities.Transaction_Types.In));
                 pages.Add(new Products());
                 pages.Add(new People(Model.Entities.PersonTypes.Customer));
-                pages.Add(new Sales(Model.Entities.Transaction_Types.Sell));
-                pages.Add(new Sales(Model.Entities.Transaction_Types.ReSell));
+                pages.Add(new Sales(Model.Entities.Transaction_Types.SellIn));                
                 pages.Add(new ComponentsDamage());
                 pages.Add(new ProductsDamage());
                 pages.Add(new Stock());
                 pages.Add(new Installments(Model.Entities.PersonTypes.Supplier));
                 pages.Add(new Installments(Model.Entities.PersonTypes.Customer));
+                pages.Add(new Outcomes());
                 foreach (Page p in pages)
                 {
                     Button btn = new Button();

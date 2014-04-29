@@ -16,7 +16,7 @@ namespace FishRestaurant.WPF
     {
 
 
-        FRContext DB;
+        FrContext DB;
         
 
         
@@ -25,7 +25,7 @@ namespace FishRestaurant.WPF
 
             InitializeComponent();
             
-            DB = new FRContext();
+            DB = new FrContext();
 
             Group_CB.ItemsSource = Enum.GetValues(typeof(Groups));
        

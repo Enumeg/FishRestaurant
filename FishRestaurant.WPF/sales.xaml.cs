@@ -28,7 +28,22 @@ namespace FishRestaurant.WPF
         {
             InitializeComponent();
             PD1 = new PrintDocument();
-            PD1.PrintPage += new PrintPageEventHandler(PD1_PrintPage);   
+            PD1.PrintPage += new PrintPageEventHandler(PD1_PrintPage);
+            if (App.User != null && App.User.Group == Groups.Cashier)
+            {
+                MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
+                ViewGrid.RowDefinitions[4].Height = new GridLength(35);
+                EditGrid.DataContext = new SaleDetail() { Amount = 1 };
+                Details_DG.ColumnHeaderHeight = 62;
+                Details_GD.RowDefinitions[1].Height = new GridLength(28);
+                Details_DG.IsReadOnly = false;
+                LB.IsEnabled = false;
+                Form.Set_Style(InfoGrid, Operations.Add);
+                Form.Set_Style(TotalsGrid, Operations.Add);
+                ViewGrid.DataContext = new Transaction() { Date = DateTime.Now.Date, Type = TransactionTypes.Order, Delivery = 0 };
+                Number.Text = TransactionsService.GetNumber(DateTime.Now, TransactionTypes.Order);
+                Pop.IsOpen = true;
+            }
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -49,6 +64,7 @@ namespace FishRestaurant.WPF
                 ProductCB.ItemsSource = DB.Products.OrderBy(p => p.Name).ToList();
                 PersonCB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 TypeCB.ItemsSource = new[] { TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
+                TypeSearchCB.ItemsSource = new object[] { "الكل", TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };                
                 TypeCB.SelectedIndex = 1;
                 var customers = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 customers.Insert(0, new Person() { Id = 0, Name = "الكل" });
@@ -71,6 +87,7 @@ namespace FishRestaurant.WPF
                 var query = DB.Transactions.AsQueryable();
                 if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }
                 if (PersonSearch.SelectedIndex > 0) { query = query.Where(p => p.PersonId == (int)PersonSearch.SelectedValue); }
+                if (TypeSearchCB.SelectedIndex > 0) { query = query.Where(p => p.Type == (TransactionTypes)TypeSearchCB.SelectedValue); }
                 if (DateSearch.Text != "") { query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }
                 LB.ItemsSource = query.Include(p => p.PurchaseDetails).OrderBy(p => p.Number).ToList();
             }
@@ -146,6 +163,10 @@ namespace FishRestaurant.WPF
                     }
                     DB.SaveChanges();
                     Confirm.Check(true);
+                    if (Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        PD1.Print();
+                    }
                 }
                 else
                 {
@@ -391,9 +412,8 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void PD1_PrintPage(object sender, PrintPageEventArgs e)
-        {            
+        {
             StringFormat sf = new StringFormat();
             sf.Alignment = StringAlignment.Center;
             sf.LineAlignment = StringAlignment.Center;
@@ -443,7 +463,6 @@ namespace FishRestaurant.WPF
             e.Graphics.DrawString(Total_TB.Text, new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
             current_height += 30;
         }
-
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -453,6 +472,30 @@ namespace FishRestaurant.WPF
             catch
             {
 
+            }
+        }
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Notify.validate("من فضلك أدخل العميل", PersonCB.SelectedIndex, Main.GetWindow(this))) { return; }
+                DB.Transactions.Add((Transaction)ViewGrid.DataContext);
+                DB.SaveChanges();
+                Pop.IsOpen = false;
+                Confirm.Check(true);
+                if (Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    PD1.Print();
+                }
+                EditGrid.DataContext = new SaleDetail() { Amount = 1 };
+                Form.Set_Style(TotalsGrid, Operations.Add);
+                ViewGrid.DataContext = new Transaction() { Date = DateDTP.Value.Value, Type = (TransactionTypes)TypeCB.SelectedItem, Delivery = 0 };
+                Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, TransactionTypes.Order);
+                Pop.IsOpen = true;
+            }
+            catch
+            {
+                Confirm.Check(false);
             }
         }
 

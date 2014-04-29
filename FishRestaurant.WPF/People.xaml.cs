@@ -31,6 +31,10 @@ namespace FishRestaurant.WPF
             Type = type;
             Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";
             FillLB();
+            if (App.User != null && App.User.Group == Groups.Cashier)
+            {
+                InfoGrid.RowDefinitions[1].Height = InfoGrid.RowDefinitions[2].Height = new GridLength(0);
+            }
         }
         private void FillLB()
         {

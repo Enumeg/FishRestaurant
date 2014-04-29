@@ -14,7 +14,7 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class ProductsDamage : Page
     {
-        FRContext DB;
+        FrContext DB;
         public ProductsDamage()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 //Products
                 Product.ItemsSource = DB.Products.OrderBy(c => c.Name).ToList();
                 var components = DB.Products.OrderBy(c => c.Name).ToList();

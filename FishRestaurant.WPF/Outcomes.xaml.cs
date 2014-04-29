@@ -15,7 +15,7 @@ namespace FishRestaurant.WPF
     public partial class Outcomes : Page
     {
 
-        FRContext DB;
+        FrContext DB;
         OutcomeTypes outcome_types;
         public Outcomes()
         {
@@ -36,7 +36,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();                                                          
+                DB = new FrContext();                                                          
                 var Types = DB.OutcomeTypes.OrderBy(c => c.Name).ToList();
                 Types.Insert(0, new OutcomeType() { Id = 0, Name = "الكل" });                
                 OutcomeTypeSearch.ItemsSource = Types;

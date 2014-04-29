@@ -4,7 +4,7 @@ namespace FishRestaurant.Model.Migrations
     using System.Data.Entity.Migrations;
     using MySql.Data.Entity;
 
-    public sealed class Configuration : DbMigrationsConfiguration<FishRestaurant.Model.Entities.FRContext>
+    public sealed class Configuration : DbMigrationsConfiguration<FishRestaurant.Model.Entities.FrContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace FishRestaurant.Model.Migrations
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(FishRestaurant.Model.Entities.FRContext context)
+        protected override void Seed(FishRestaurant.Model.Entities.FrContext context)
         {
             //  This method will be called after migrating to the latest version.
 

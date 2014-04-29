@@ -12,11 +12,11 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class OutcomeTypes : Window
     {
-        FRContext DB;
+        FrContext DB;
         public OutcomeTypes()
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
             FillLB();
         }
         private void FillLB()

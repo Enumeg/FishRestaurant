@@ -12,7 +12,7 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Components : Page
     {
-        FRContext DB;
+        FrContext DB;
         public Components()
         {
             InitializeComponent();
@@ -22,7 +22,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 FillDG();
                 InitializeLookups();
             }

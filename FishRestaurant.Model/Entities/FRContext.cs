@@ -9,10 +9,10 @@ using MySql.Data.Entity;
 namespace FishRestaurant.Model.Entities
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-   public class FRContext : DbContext
+   public class FrContext : DbContext
     {
        
-        public FRContext()
+        public FrContext()
             : base("Con")
         {
 
@@ -24,6 +24,7 @@ namespace FishRestaurant.Model.Entities
         public DbSet<Person> People { get; set; }
         public DbSet<Component> Components { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductComponents> ProductsComponents { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<PurchaseDetail> PurchaseDetails { get; set; }

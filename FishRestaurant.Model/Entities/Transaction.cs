@@ -18,10 +18,12 @@ namespace FishRestaurant.Model.Entities
         }      
         public int Id { get; set; }
         public int Number { get; set; }
-        public Transaction_Types Type { get; set; }     
+        public TransactionTypes Type { get; set; }     
         public DateTime Date { get; set; }
         public decimal Total { get; set; }
-        public decimal Paid { get; set; }       
+        public decimal Discount { get; set; }
+        public decimal Paid { get; set; }
+        public decimal Delivery { get; set; }
         public int PersonId { get; set; }
         public virtual Person Person { get; set; }
         public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }

@@ -51,7 +51,7 @@
                 <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="التاريخ :" />
                 <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="المورد :" />
                 <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Text="{Binding Path=Number,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="Number" />
-                <ex:DateTimePicker Grid.Column="3" Value="{Binding Path=Date}" Style="{StaticResource View_DateTimePicker}" Name="DateDTP" />
+                <ex:DateTimePicker Grid.Column="3" Value="{Binding Path=Date}" Style="{StaticResource View_DateTimePicker}" Name="DateDTP" ValueChanged="DateDTP_ValueChanged" />
                 <ComboBox Grid.Column="7" Style="{StaticResource View_ComboBox}" Name="PersonCB" SelectedItem="{Binding Path=Person}" DisplayMemberPath="Name" />
             </Grid>
             <Grid Grid.Row="1" Name="Details_GD">
@@ -105,17 +105,19 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="0" />
-                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Style="{StaticResource Label_TextBlock}" Text="الإجمالي :" />
-                <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="المدفوع :" />
-                <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="الباقي :" />
+                <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="الخصم :" />
+                <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="المدفوع :" />
+                <TextBlock Grid.Column="6" Style="{StaticResource Label_TextBlock}" Text="الباقي :" />
                 <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Name="Total_TB"
                         Text="{Binding Path=Total,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
-                <TextBox Grid.Column="3" Style="{StaticResource View_TextBox}" Name="Paid_TB" Text="{Binding Path=Paid,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Grid.Column="3" Style="{StaticResource View_TextBox}" Name="DiscountTB" Text="{Binding Path=Discount}" TextChanged="DiscountTB_TextChanged" />
+                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="Paid_TB" Text="{Binding Path=Paid,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         TextChanged="Paid_TB_TextChanged" />
-                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="Rest_TB" IsReadOnly="True" />
+                <TextBox Grid.Column="7" Style="{StaticResource View_TextBox}" Name="Rest_TB" IsReadOnly="True" />
             </Grid>
             <cc:SavePanel Grid.Column="1" Grid.Row="3" Name="Save_Panel" Save="Submit" Cancel="Submit" BorderBrush="Black" BorderThickness="0,2,0,0" />
             <Border Grid.Row="4" BorderBrush="White" BorderThickness="0,2,0,0">

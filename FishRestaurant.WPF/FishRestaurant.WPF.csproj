@@ -123,6 +123,9 @@
     <Compile Include="ComponentDamage.xaml.cs">
       <DependentUpon>ComponentDamage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProductComponents.xaml.cs">
+      <DependentUpon>ProductComponents.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProductDamage.xaml.cs">
       <DependentUpon>ProductDamage.xaml</DependentUpon>
     </Compile>
@@ -213,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ComponentDamage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProductComponents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

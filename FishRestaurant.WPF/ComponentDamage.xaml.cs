@@ -16,7 +16,7 @@ namespace FishRestaurant.WPF
     {
         decimal amount;
         Units Unit;
-        FRContext DB;
+        FrContext DB;
         public ComponentsDamage()
         {
             InitializeComponent();
@@ -37,7 +37,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 //components
                 Component.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 var components = DB.Components.OrderBy(c => c.Name).ToList();

@@ -49,13 +49,13 @@ namespace FishRestaurant.WPF
                 windows = new List<Window>();
                 pages.Add(new Components());
                 pages.Add(new People(Model.Entities.PersonTypes.Supplier));
-                pages.Add(new Purchases(Model.Entities.Transaction_Types.Buy));
-                pages.Add(new Purchases(Model.Entities.Transaction_Types.ReBuy));
+                pages.Add(new Purchases(Model.Entities.TransactionTypes.Buy));
+                pages.Add(new Purchases(Model.Entities.TransactionTypes.ReBuy));
                 //pages.Add(new Transfers(Model.Entities.Transaction_Types.Out));
                 //pages.Add(new Transfers(Model.Entities.Transaction_Types.In));
                 pages.Add(new Products());
                 pages.Add(new People(Model.Entities.PersonTypes.Customer));
-                pages.Add(new Sales(Model.Entities.Transaction_Types.SellIn));                
+                pages.Add(new Sales());                
                 pages.Add(new ComponentsDamage());
                 pages.Add(new ProductsDamage());
                 pages.Add(new Stock());

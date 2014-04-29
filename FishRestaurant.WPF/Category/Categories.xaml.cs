@@ -13,12 +13,12 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Categories : Window
     {
-        FRContext DB;
+        FrContext DB;
         CategoryTypes Type;
         public Categories(CategoryTypes type)
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
             Type = type;
             FillLB();
         }

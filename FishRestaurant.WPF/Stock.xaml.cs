@@ -14,7 +14,7 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Stock : Page
     {
-        FRContext DB;
+        FrContext DB;
         public Stock()
         {
             InitializeComponent();
@@ -24,7 +24,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 FillDG();
                 InitializeLookups();
             }

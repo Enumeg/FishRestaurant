@@ -23,7 +23,7 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Installments : Page
     {
-        FRContext DB;
+        FrContext DB;
         PersonTypes Type;
         public Installments(PersonTypes type)
         {
@@ -48,7 +48,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 PersonCB.ItemsSource = DB.People.Where(p => p.Type == Type).OrderBy(p => p.Name).ToList();
                 FillDG();
             }

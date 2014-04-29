@@ -117,11 +117,20 @@
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Outcomes.xaml.cs">
+      <DependentUpon>Outcomes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OutcomeTypes.xaml.cs">
+      <DependentUpon>OutcomeTypes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="People.xaml.cs">
       <DependentUpon>People.xaml</DependentUpon>
     </Compile>
     <Compile Include="ComponentDamage.xaml.cs">
       <DependentUpon>ComponentDamage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProductComponents.xaml.cs">
+      <DependentUpon>ProductComponents.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProductDamage.xaml.cs">
       <DependentUpon>ProductDamage.xaml</DependentUpon>
@@ -207,6 +216,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Outcomes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OutcomeTypes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ComponentDamage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProductComponents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,17 +17,17 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Products : Page
     {
-        FRContext DB;
+        FrContext DB;
 
         public Products()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 FillLB();
                 InitializeLookups();
             }
@@ -44,9 +44,6 @@ namespace FishRestaurant.WPF
                 categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
                 CategorySearch.ItemsSource = categories;
                 CategoryCB.ItemsSource = DB.Categories.Where(c => c.Type == CategoryTypes.Product).OrderBy(c => c.Name).ToList();
-                ComponentsCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
-                Units.ItemsSource = Enum.GetValues(typeof(Units));
-                
             }
             catch
             {
@@ -64,7 +61,7 @@ namespace FishRestaurant.WPF
                     query = query.Where(c => c.CategoryId == (int)CategorySearch.SelectedValue);
                 }
 
-                LB.ItemsSource = query.OrderBy(c => c.Name).ToList();
+                ProductsDG.ItemsSource = query.OrderBy(c => c.Name).ToList();
             }
             catch
             {
@@ -72,8 +69,6 @@ namespace FishRestaurant.WPF
             }
 
         }
-
-        #region ProductPanel
         private void EP_Edit(object sender, EventArgs e)
         {
             try
@@ -85,7 +80,7 @@ namespace FishRestaurant.WPF
                 }
                 else
                 {
-                    var product = LB.SelectedItem as Product;
+                    var product = ProductsDG.SelectedItem as Product;
                     pop.DataContext = product;
                     if (product.Image != null)
                         Img.Source = ImageByteConverter.byteArrayToImage(product.Image);
@@ -104,12 +99,12 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (LB.SelectedIndex != -1)
+                if (ProductsDG.SelectedIndex != -1)
                 {
 
                     if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                     {
-                        DB.Products.Remove((Product)LB.SelectedItem);
+                        DB.Products.Remove((Product)ProductsDG.SelectedItem);
                         DB.SaveChanges();
                         FillLB();
                     }
@@ -165,89 +160,6 @@ namespace FishRestaurant.WPF
 
             }
         }
-
-        #endregion
-
-        #region ComponentsPanel
-        private void EditPanel_Edit(object sender, EventArgs e)
-        {
-            try
-            {
-                if (((Button)sender).Name.Split('_')[0] == "Add")
-                {
-                    ComPopup.DataContext = new ProductComponents() { };
-                    SumbitBTN.Tag = "Add";
-                }
-                else
-                {
-                    SumbitBTN.Tag = "Edit";
-                    ComPopup.DataContext = ComponentsLB.SelectedItem;
-                }
-                ComPopup.IsOpen = true;
-
-            }
-            catch
-            {
-
-            }
-        }
-        private void EditPanel_Delete(object sender, EventArgs e)
-        {
-            try
-            {
-                if (ComponentsLB.SelectedIndex != -1)
-                {
-
-                    if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
-                    {
-                        ((Product)LB.SelectedItem).ProductComponents.Remove((ProductComponents)ComponentsLB.SelectedItem);
-                        DB.SaveChanges();
-                        FillLB();
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-        }
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-                var ProductComs = ComPopup.DataContext as ProductComponents;
-                if (ProductComs.Id == 0) { ((Product)LB.SelectedItem).ProductComponents.Add(ProductComs); }
-                DB.SaveChanges();
-                if ((bool)New.IsChecked)
-                {
-                    ComPopup.DataContext = new Product();
-                }
-                else
-                {
-                    ComPopup.IsOpen = false;
-                }
-                Confirm.Check(true);
-                FillLB();
-            }
-            catch
-            {
-                Confirm.Check(false);
-            }
-        }
-        private void FillComponentsLB()
-        {
-            try
-            {
-                ComponentsLB.ItemsSource = ((Product)LB.SelectedItem).ProductComponents;
-            }
-            catch
-            {
-
-            }
-        }
-
-        #endregion
         private void FillLB(object sender, EventArgs e)
         {
             FillLB();
@@ -265,16 +177,32 @@ namespace FishRestaurant.WPF
 
             }
         }
+        private void Components_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ProductsDG.SelectedIndex > -1)
+                {
+                    ProductsComponents c = new ProductsComponents(DB, ProductsDG.SelectedItem as Product);
+                    c.ShowDialog();
+                    InitializeLookups();
+                }
+                else
+                {
+                    Message.Show("من فضلك أختار المنتج أولاً", MessageBoxButton.OK);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         private void LB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                FillComponentsLB();
-                var product = LB.SelectedItem as Product;
-                if (product.Image != null)
-                    ProductImg.Source = ImageByteConverter.byteArrayToImage(product.Image);
-                else
-                    ProductImg.Source = new BitmapImage(new Uri("/Images/question_mark_icon.jpg", UriKind.Relative));
+             
             }
             catch
             {

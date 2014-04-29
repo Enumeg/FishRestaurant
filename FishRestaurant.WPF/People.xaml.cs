@@ -22,12 +22,12 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class People : Page
     {
-        FRContext DB;
+        FrContext DB;
         PersonTypes Type;
         public People(PersonTypes type)
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
             Type = type;
             Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";
             FillLB();
@@ -96,7 +96,10 @@ namespace FishRestaurant.WPF
                 {
                     if (LB.SelectedIndex == -1)
                     {
-                        DB.People.Add(MainGrid.DataContext as Person);
+                        if (DB.People.First(p => p.Address == AddressTB.Text && p.Phone == TelephoneTB.Text) != null)
+                            DB.People.Add(MainGrid.DataContext as Person);
+                        else
+                            Message.Show("يوجد عميل بنفس العنوان ورقم التليفون", MessageBoxButton.OKCancel);
                     }
                     DB.SaveChanges();
                     Confirm.Check(true);

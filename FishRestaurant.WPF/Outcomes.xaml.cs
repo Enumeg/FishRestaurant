@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,37 +10,38 @@ using Source;
 namespace FishRestaurant.WPF
 {
     /// <summary>
-    /// Interaction logic for Product.xaml
+    /// Interaction logic for Outcomes.xaml
     /// </summary>
-    public partial class Components : Page
+    public partial class Outcomes : Page
     {
+
         FrContext DB;
-        public Components()
+        OutcomeTypes outcome_types;
+        public Outcomes()
         {
             InitializeComponent();
-
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                DB = new FrContext();
-                FillDG();
-                InitializeLookups();
+                Initialize();              
             }
             catch
             {
 
             }
         }
-        private void InitializeLookups()
+        private void Initialize()
         {
             try
             {
-                var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Compontent).OrderBy(c => c.Name).ToList();
-                categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
-                CategoryCB.ItemsSource = DB.Categories.Where(c => c.Type == CategoryTypes.Compontent).OrderBy(c => c.Name).ToList();
-                CategorySearchCB.ItemsSource = categories;
+                DB = new FrContext();                                                          
+                var Types = DB.OutcomeTypes.OrderBy(c => c.Name).ToList();
+                Types.Insert(0, new OutcomeType() { Id = 0, Name = "الكل" });                
+                OutcomeTypeSearch.ItemsSource = Types;
+                Type.ItemsSource = DB.OutcomeTypes.OrderBy(c => c.Name).ToList();
+                FillDG();
             }
             catch
             {
@@ -50,9 +53,10 @@ namespace FishRestaurant.WPF
 
             try
             {
-                var query = DB.Components.Where(c => c.Name.StartsWith(ComponentSearchTB.Text));
-                if (CategorySearchCB.SelectedIndex > 0) { query = query.Where(c => c.CategoryId == (int)CategorySearchCB.SelectedValue); }
-                ComponentsDG.ItemsSource = query.OrderBy(c => c.Name).ToList();
+                var query = DB.Outcomes.Where(c => DbFunctions.TruncateTime(c.Date) >= DbFunctions.TruncateTime(SearchFromDateDTP.Value.Value) &&
+                   DbFunctions.TruncateTime(c.Date) <= DbFunctions.TruncateTime(SearchToDateDTP.Value.Value));
+                if (OutcomeTypeSearch.SelectedIndex > 0) { query = query.Where(c => c.OutcomeTypeId == ((OutcomeType)OutcomeTypeSearch.SelectedItem).Id); }
+                OutcomeDG.ItemsSource = query.OrderBy(c => c.Date).ToList();
             }
             catch
             {
@@ -66,11 +70,11 @@ namespace FishRestaurant.WPF
             {
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
-                    pop.DataContext = new Component();
+                    pop.DataContext = new Outcome() { Date = DateTime.Now };
                 }
                 else
-                {
-                    pop.DataContext = ComponentsDG.SelectedItem as Component;
+                {                   
+                    pop.DataContext = OutcomeDG.SelectedItem as Outcome;                    
                 }
                 pop.IsOpen = true;
 
@@ -84,12 +88,12 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (ComponentsDG.SelectedIndex != -1)
+                if (OutcomeDG.SelectedIndex != -1)
                 {
 
-                    if (Message.Show("هل تريد حذف هذا الصنف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
-                    {
-                        DB.Components.Remove((Component)ComponentsDG.SelectedItem);
+                    if (Message.Show("هل تريد حذف هذا المصروف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
+                    {                      
+                        DB.Outcomes.Remove((Outcome)OutcomeDG.SelectedItem);
                         DB.SaveChanges();
                         FillDG();
                     }
@@ -102,13 +106,9 @@ namespace FishRestaurant.WPF
         }
         private void FillDG(object sender, EventArgs e)
         {
-            FillDG();
-        }
-        private void pop_Closed(object sender, EventArgs e)
-        {
             try
-            {
-                //pop.DataContext = null;
+            {           
+                FillDG();
             }
             catch
             {
@@ -119,8 +119,11 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                var Component = pop.DataContext as Component;
-                if (Component.Id == 0) { DB.Components.Add(Component); }
+                var Outcome = pop.DataContext as Outcome;
+                if (Outcome.Id == 0)
+                {
+                    DB.Outcomes.Add(Outcome);                   
+                }               
                 DB.SaveChanges();
                 if ((bool)New.IsChecked)
                 {
@@ -142,9 +145,9 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                Categories c = new Categories(CategoryTypes.Compontent);
+                OutcomeTypes c = new OutcomeTypes();
                 c.ShowDialog();
-                InitializeLookups();
+                Initialize();
             }
             catch
             {
@@ -152,7 +155,9 @@ namespace FishRestaurant.WPF
             }
         }
 
-      
+
+
+
 
     }
 }

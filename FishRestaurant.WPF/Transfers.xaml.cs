@@ -14,14 +14,14 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Transfers : Page
     {
-        FRContext DB;
-        Transaction_Types Type;
+        FrContext DB;
+        TransactionTypes Type;
         decimal Amount;
         Units Unit;
-        public Transfers(Transaction_Types type)
+        public Transfers(TransactionTypes type)
         {
             InitializeComponent();
-            Type = type; Title = type == Transaction_Types.Out ? "سحب أصناف" : "تخزين أصناف";
+            Type = type; Title = type == TransactionTypes.Out ? "سحب أصناف" : "تخزين أصناف";
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,7 +38,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 ComponentCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 UnitCB.ItemsSource = Enum.GetValues(typeof(Units));
                 FillLB();
@@ -104,7 +104,7 @@ namespace FishRestaurant.WPF
                         decimal amount;
                         foreach (var p in ((Transfer)LB.SelectedItem).TransferDetails)
                         {
-                            amount = Type == Transaction_Types.In ? p.Amount : p.Amount * -1;
+                            amount = Type == TransactionTypes.In ? p.Amount : p.Amount * -1;
                             if (p.Unit == Units.جرام) { amount *= 0.001m; }
                             //DB.Components.Find(p.ComponentId).Stock -= amount;
                         }
@@ -179,7 +179,7 @@ namespace FishRestaurant.WPF
                 var TransferDetails = ((Transfer)ViewGrid.DataContext).TransferDetails;
                 if (AddBTN.Content.ToString() == "Add")
                 {
-                    amount = Type == Transaction_Types.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
+                    amount = Type == TransactionTypes.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
                     if (TransferDetail.Unit == Units.جرام) { amount *= 0.001m; }
                     var oldTransferDetail = TransferDetails.FirstOrDefault(p => p.Component.Id == TransferDetail.Component.Id && p.Unit == TransferDetail.Unit);
                     if (oldTransferDetail != null)
@@ -196,11 +196,11 @@ namespace FishRestaurant.WPF
                     TransferDetail.OnPropertyChanged("Amount");
                     if (TransferDetail.Unit == Units.جرام)
                     {
-                        amount = Type == Transaction_Types.In ? TransferDetail.Amount * 0.001m - Amount : Amount - TransferDetail.Amount * 0.001m;
+                        amount = Type == TransactionTypes.In ? TransferDetail.Amount * 0.001m - Amount : Amount - TransferDetail.Amount * 0.001m;
                     }
                     else
                     {
-                        amount = Type == Transaction_Types.In ? TransferDetail.Amount - Amount : Amount - TransferDetail.Amount;
+                        amount = Type == TransactionTypes.In ? TransferDetail.Amount - Amount : Amount - TransferDetail.Amount;
                     }
                 }
                 AddBTN.Content = "Add";
@@ -242,7 +242,7 @@ namespace FishRestaurant.WPF
                 if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
                 {
                     var TransferDetail = (TransferDetail)EditGrid.DataContext;
-                    var amount = Type == Transaction_Types.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
+                    var amount = Type == TransactionTypes.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
                     if (TransferDetail.Unit == Units.جرام) { amount *= 0.001m; }
                     //DB.Components.Find(TransferDetail.Component.Id).Stock -= amount;
                     DB.TransferDetails.Remove(TransferDetail);

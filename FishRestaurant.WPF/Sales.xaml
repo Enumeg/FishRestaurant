@@ -1,6 +1,6 @@
 ﻿<Page x:Class="FishRestaurant.WPF.Sales" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:cc="clr-namespace:Source;assembly=Source" FlowDirection="RightToLeft" Loaded="Page_Loaded"
-        Background="{StaticResource Page_Background}">
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:cc="clr-namespace:Source;assembly=Source"  FlowDirection="RightToLeft" Loaded="Page_Loaded"
+        xmlns:Converters="clr-namespace:Source.Converters;assembly=Source" Background="{StaticResource Page_Background}">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -46,13 +46,17 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Style="{StaticResource Label_TextBlock}" Text="الرقـــــــم :" />
                 <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="التاريخ :" />
                 <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="العميل :" />
+                <TextBlock Grid.Column="6" Style="{StaticResource Label_TextBlock}" Text="النوع :" />
                 <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Text="{Binding Path=Number,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="Number" />
-                <ex:DateTimePicker Grid.Column="3" Value="{Binding Path=Date}" Style="{StaticResource View_DateTimePicker}" Name="DateDTP" />
-                <ComboBox Grid.Column="7" Style="{StaticResource View_ComboBox}" Name="PersonCB" SelectedItem="{Binding Path=Person}" DisplayMemberPath="Name" />
+                <ex:DateTimePicker Grid.Column="3" Value="{Binding Path=Date}" Style="{StaticResource View_DateTimePicker}" Name="DateDTP" ValueChanged="GetNumber"/>
+                <ComboBox Grid.Column="5" Style="{StaticResource View_ComboBox}" Name="PersonCB" SelectedItem="{Binding Path=Person}" DisplayMemberPath="Name" />
+                <ComboBox Grid.Column="7" Style="{StaticResource View_ComboBox}" Name="TypeCB" SelectedItem="{Binding Path=Type}" SelectionChanged="GetNumber" />
             </Grid>
             <Grid Grid.Row="1" Name="Details_GD">
                 <Grid.RowDefinitions>
@@ -87,10 +91,83 @@
                                 SelectionChanged="ProductCB_SelectionChanged" DisplayMemberPath="Name" SelectedItem="{Binding Path=Product}" />
                             <Button Style="{StaticResource ResourceKey=ImageButton}" Tag="/FishRestaurant.WPF;component/Images/Search.png" Grid.Column="1" Click="Search" />
                         </Grid>
-                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource Grid_TextBox}" Text="{Binding Path=Amount}" />
+                        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource Grid_TextBox}" Text="{Binding Path=Amount}" Name="AmountTB"/>
                         <TextBox Grid.Column="2" Grid.Row="1" Style="{StaticResource Grid_TextBox}"
                                 Text="{Binding Path=Price,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="Price" />
                         <Button Grid.Column="3" Grid.Row="1" Style="{StaticResource Add_Button}" Click="Add_Click" IsDefault="True" Name="AddBTN" Content="Add" />
+                        <Popup Grid.Column="0" Grid.Row="1"  Name="Pop" StaysOpen="True" Placement="Bottom"
+                                PlacementTarget="{ Binding ElementName=EditGrid}">
+                            <Button Style="{DynamicResource Popup}">
+                                <Grid>
+                                    <Grid.Resources>
+                                        <Converters:Image_Bytes_Converter x:Key="Img_byt" />
+                                    </Grid.Resources>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="400" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="الفئة :" Style="{StaticResource Label_TextBlock}" />
+                                    <ComboBox Grid.Column="1" Name="CategoryCB" Style="{StaticResource Search_ComboBox}" DisplayMemberPath="Name" SelectedValuePath="Id"
+                                            SelectionChanged="CategoryCB_SelectionChanged" />
+                                    <ListBox Grid.Row="1" Grid.ColumnSpan="3" Name="ProductsLB" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel IsItemsHost="True" Orientation="Horizontal"></WrapPanel>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Tag="{Binding Path=pro_id}" Width="314" Margin="2" Height="70" Click="Button_Click"
+                                                        VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Grid>
+                                                                <Border x:Name="OuterBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Opacity="0.3" />
+                                                                <Border x:Name="InnerBorder" Margin="2" Background="{TemplateBinding Background}" />
+                                                                <Grid Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="60" />
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="80" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Image Grid.Column="2" Source="{Binding Path=Image,Converter={StaticResource Img_byt}}" Margin="7,10"
+                                                                            Stretch="Fill" />
+                                                                    <TextBlock Grid.Column="1" Style="{StaticResource Label_TextBlock}" HorizontalAlignment="Center"
+                                                                            Text="{Binding Path=Name}" />
+                                                                    <TextBlock Grid.Column="0" Style="{StaticResource View_TextBlock}" HorizontalAlignment="Right"
+                                                                            Text="{Binding Path=Price,StringFormat={}{0:0.00}}" />
+                                                                </Grid>
+                                                            </Grid>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                                                    <Setter Property="Opacity" TargetName="OuterBorder" Value="1" />
+                                                                </Trigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Opacity" TargetName="OuterBorder" Value="1" />
+                                                                </Trigger>
+                                                                <Trigger Property="IsPressed" Value="True">
+                                                                    <Setter Property="Margin" TargetName="InnerBorder" Value="3" />
+                                                                    <Setter Property="BorderThickness" TargetName="OuterBorder" Value="3" />
+                                                                </Trigger>
+                                                                <Trigger Property="IsEnabled" Value="false">
+                                                                    <Setter Property="Foreground" Value="#ADADAD" />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </Button>
+                        </Popup>
                     </Grid>
                 </Border>
             </Grid>
@@ -100,30 +177,37 @@
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="0" />
                     <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Style="{StaticResource Label_TextBlock}" Text="الإجمالي :" />
-                <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="المدفوع :" />
-                <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="الباقي :" />
-                <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Name="Total_TB"
+                <TextBlock Grid.Column="0" Style="{StaticResource Label_TextBlock}" Text="التوصيل :" />
+                <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="الإجمالي :" />
+                <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="الخصم :" />
+                <TextBlock Grid.Column="6" Style="{StaticResource Label_TextBlock}" Text="المدفوع :" />
+                <TextBlock Grid.Column="8" Style="{StaticResource Label_TextBlock}" Text="الباقي :" />
+                <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Name="DeliveryTB" Text="{Binding Path=Delivery}" TextChanged="DeliveryTB_TextChanged" />
+                <TextBox Grid.Column="3" Style="{StaticResource View_TextBox}" Name="Total_TB"
                         Text="{Binding Path=Total,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
-                <TextBox Grid.Column="3" Style="{StaticResource View_TextBox}" Name="Paid_TB" Text="{Binding Path=Paid,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="DiscountTB" Text="{Binding Path=Discount}" TextChanged="DiscountTB_TextChanged" />
+                <TextBox Grid.Column="7" Style="{StaticResource View_TextBox}" Name="Paid_TB" Text="{Binding Path=Paid,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         TextChanged="Paid_TB_TextChanged" />
-                <TextBox Grid.Column="5" Style="{StaticResource View_TextBox}" Name="Rest_TB" IsReadOnly="True" />
+                <TextBox Grid.Column="9" Style="{StaticResource View_TextBox}" Name="Rest_TB" IsReadOnly="True" />
+                <Button Grid.Column="10" Style="{StaticResource Printer_Button}" Name="Print" Click="Print_Click"/>
             </Grid>
             <cc:SavePanel Grid.Column="1" Grid.Row="3" Name="Save_Panel" Save="Submit" Cancel="Submit" BorderBrush="Black" BorderThickness="0,2,0,0" />
             <Border Grid.Row="4" BorderBrush="White" BorderThickness="0,2,0,0">
                 <Button Content="حفظ" Style="{StaticResource Panel_Button}" Tag="/FishRestaurant.WPF;component/Images/Accept.ico" />
             </Border>
         </Grid>
-        
     </Grid>
 </Page>
 

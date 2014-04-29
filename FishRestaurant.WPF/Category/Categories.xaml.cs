@@ -9,16 +9,16 @@ using System.Collections.Generic;
 namespace FishRestaurant.WPF
 {
     /// <summary>
-    /// Interaction logic for Category.xaml
+    /// Interaction logic for Type.xaml
     /// </summary>
     public partial class Categories : Window
     {
-        FRContext DB;
+        FrContext DB;
         CategoryTypes Type;
         public Categories(CategoryTypes type)
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
             Type = type;
             FillLB();
         }

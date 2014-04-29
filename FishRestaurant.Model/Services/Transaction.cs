@@ -9,11 +9,11 @@ namespace FishRestaurant.WPF.Services
 {
    public class TransactionsService
     {
-        public static string GetNumber(DateTime date, Transaction_Types Type)
+        public static string GetNumber(DateTime date, TransactionTypes Type)
         {
-            FRContext DB = new FRContext();
+            FrContext DB = new FrContext();
 
-            if (Type == Transaction_Types.In || Type == Transaction_Types.Out)
+            if (Type == TransactionTypes.In || Type == TransactionTypes.Out)
             {
                 var num = DB.Transfers.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month && p.Type == Type);
                 return num.Count() != 0 ? (num.Max(p => p.Number) + 1).ToString() : string.Format("{0}001", date.ToString("yyMM"));

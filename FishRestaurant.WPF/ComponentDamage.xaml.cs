@@ -16,7 +16,7 @@ namespace FishRestaurant.WPF
     {
         decimal amount;
         Units Unit;
-        FRContext DB;
+        FrContext DB;
         public ComponentsDamage()
         {
             InitializeComponent();
@@ -37,13 +37,13 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 //components
                 Component.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 var components = DB.Components.OrderBy(c => c.Name).ToList();
                 components.Insert(0, new Component() { Id = 0, Name = "الكل" });
                 ComponentSearch.ItemsSource = components;
-                //categories
+                //Types
                 var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Compontent).OrderBy(c => c.Name).ToList();
                 categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
                 Category.ItemsSource = categories;
@@ -107,7 +107,7 @@ namespace FishRestaurant.WPF
                     {
                         var ComponentDamage = (ComponentDamage)ComponentsDamageDG.SelectedItem;
                         var Amount = ComponentDamage.Unit == Model.Entities.Units.جرام ? ComponentDamage.Amonut * 0.001m : ComponentDamage.Amonut;
-                        //DB.Components.Find(ComponentDamage.Component.Id).Stock += Amount;
+                        //DB.Components.Find(Outcome.Component.Id).Stock += Amount;
                         DB.ComponentsDamage.Remove(ComponentDamage);
                         DB.SaveChanges();
                         FillDG();
@@ -154,7 +154,7 @@ namespace FishRestaurant.WPF
                     if (Unit == Model.Entities.Units.جرام) { amount *= 0.001m; }
                     amount = (ComponentDamage.Unit == Model.Entities.Units.جرام ? ComponentDamage.Amonut * 0.001m : ComponentDamage.Amonut) - amount;
                 }
-                //DB.Components.Find(ComponentDamage.Component.Id).Stock -= amount;
+                //DB.Components.Find(Outcome.Component.Id).Stock -= amount;
                 DB.SaveChanges();
                 if ((bool)New.IsChecked)
                 {

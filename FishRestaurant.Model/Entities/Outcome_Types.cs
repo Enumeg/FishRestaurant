@@ -6,22 +6,16 @@ using System.Threading.Tasks;
 
 namespace FishRestaurant.Model.Entities
 {
-    class OutcomeType
+    public class OutcomeType
     {
-
-
         public OutcomeType()
-        {
-           
-            Outcomes = new List<Outcome>();
-        
+        {           
+            Types = new List<Outcome>();        
         }
-
 
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public virtual ICollection<Outcome> Outcomes { get; set; }
+        public virtual ICollection<Outcome> Types { get; set; }
 
     }
 

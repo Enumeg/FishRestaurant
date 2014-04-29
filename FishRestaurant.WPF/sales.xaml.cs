@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,14 +20,15 @@ namespace FishRestaurant.WPF
     public partial class Sales : Page
     {
 
-        FRContext DB;
-        Transaction_Types Type;
+        FrContext DB;
         decimal Amount;
-        public Sales(Transaction_Types type)
+        PrintDocument PD1;
+
+        public Sales()
         {
             InitializeComponent();
-            Type = type;
-            Title = type == Transaction_Types.Sell ? "المبيعات" : "مرتجعات المبيعات";
+            PD1 = new PrintDocument();
+            PD1.PrintPage += new PrintPageEventHandler(PD1_PrintPage);   
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -40,12 +45,18 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();
+                DB = new FrContext();
                 ProductCB.ItemsSource = DB.Products.OrderBy(p => p.Name).ToList();
                 PersonCB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
+                TypeCB.ItemsSource = new[] { TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
+                TypeCB.SelectedIndex = 1;
                 var customers = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 customers.Insert(0, new Person() { Id = 0, Name = "الكل" });
                 PersonSearch.ItemsSource = customers;
+                var categories = DB.Categories.Where(c => c.Type == CategoryTypes.Product).OrderBy(p => p.Name).ToList();
+                categories.Insert(0, new Category() { Id = 0, Name = "الكل" });
+                CategoryCB.ItemsSource = categories;
+                CategoryCB.SelectedIndex = 0;
                 FillLB();
             }
             catch
@@ -57,7 +68,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                var query = DB.Transactions.Where(p => p.Type == Type);
+                var query = DB.Transactions.AsQueryable();
                 if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }
                 if (PersonSearch.SelectedIndex > 0) { query = query.Where(p => p.PersonId == (int)PersonSearch.SelectedValue); }
                 if (DateSearch.Text != "") { query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }
@@ -85,9 +96,9 @@ namespace FishRestaurant.WPF
                     LB.SelectedIndex = -1;
                     Form.Set_Style(InfoGrid, Operations.Add);
                     Form.Set_Style(TotalsGrid, Operations.Add);
-                    ViewGrid.DataContext = new Transaction() { Date = DateDTP.Value.Value, Type = Type };
-                    Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
-
+                    ViewGrid.DataContext = new Transaction() { Date = DateDTP.Value.Value, Type = TransactionTypes.Order, Delivery = 0 };
+                    Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, TransactionTypes.Order);
+                    Pop.IsOpen = true;
                 }
                 else
                 {
@@ -151,7 +162,7 @@ namespace FishRestaurant.WPF
                 Details_DG.ColumnHeaderHeight = 32;
                 Details_GD.RowDefinitions[1].Height = new GridLength(0);
                 LB.SelectedIndex = -1;
-
+                Pop.IsOpen = false;
             }
             catch
             {
@@ -178,6 +189,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
+                AddBTN.Focus();
                 var SaleDetail = (SaleDetail)EditGrid.DataContext;
                 var SaleDetails = ((Transaction)ViewGrid.DataContext).SaleDetails;
                 if (AddBTN.Content.ToString() == "Add")
@@ -187,6 +199,7 @@ namespace FishRestaurant.WPF
                     {
                         oldPurchaseDetail.Amount += SaleDetail.Amount;
                         oldPurchaseDetail.OnPropertyChanged("Amount");
+                        oldPurchaseDetail.OnPropertyChanged("Total");
                     }
                     else
                     {
@@ -200,8 +213,9 @@ namespace FishRestaurant.WPF
                 AddBTN.Content = "Add";
                 SaleDetail.Total = Math.Round(SaleDetail.Amount * SaleDetail.Price, 2);
                 SaleDetail.OnPropertyChanged("Total");
-                Paid_TB.Text = Total_TB.Text = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
+                GetTotal();
                 EditGrid.DataContext = new SaleDetail() { Amount = 1 };
+                if (!Pop.IsOpen) { Pop.IsOpen = true; }
             }
             catch
             {
@@ -234,9 +248,9 @@ namespace FishRestaurant.WPF
             try
             {
                 if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
-                {                  
+                {
                     DB.SaleDetails.Remove((SaleDetail)EditGrid.DataContext);
-                    Paid_TB.Text = Total_TB.Text = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount)).ToString("0.00");
+                    GetTotal();
                 }
             }
             catch
@@ -249,7 +263,7 @@ namespace FishRestaurant.WPF
             try
             {
                 var Purchase = ((Transaction)ViewGrid.DataContext);
-                Rest_TB.Text = (Purchase.Total - Purchase.Paid).ToString("0.00");
+                Rest_TB.Text = (Purchase.Total - decimal.Parse(DiscountTB.Text) - Purchase.Paid).ToString("0.00");
             }
             catch
             {
@@ -269,9 +283,178 @@ namespace FishRestaurant.WPF
 
             }
         }
-
         private void Search(object sender, EventArgs e)
-        { }
+        {
+            Pop.IsOpen = true;
+        }
+        private void DiscountTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                var Transaction = ((Transaction)ViewGrid.DataContext);
+                if (Transaction != null && LB.IsEnabled == false)
+                    Paid_TB.Text = (Transaction.Total - decimal.Parse(DiscountTB.Text)).ToString("0.00");
+            }
+            catch
+            {
+
+            }
+        }
+        private void DeliveryTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                var Transaction = ((Transaction)ViewGrid.DataContext);
+                if (Transaction != null && LB.IsEnabled == false)
+                    Paid_TB.Text = Total_TB.Text = (Transaction.SaleDetails.Sum(p => (p.Price * p.Amount)) + decimal.Parse(DeliveryTB.Text)).ToString("0.00");
+            }
+            catch
+            {
+
+            }
+        }
+        private void GetNumber(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sender is ComboBox)
+                {
+                    if ((TransactionTypes)TypeCB.SelectedItem == TransactionTypes.Order)
+                    {
+                        TotalsGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Auto);
+                        TotalsGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+                    }
+                    else
+                    {
+                        TotalsGrid.ColumnDefinitions[0].Width = TotalsGrid.ColumnDefinitions[1].Width = new GridLength(0);
+                    }
+                    GetTotal();
+                }
+                if (LB.IsEnabled == false)
+                    Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, (TransactionTypes)TypeCB.SelectedItem);
+            }
+            catch
+            {
+
+            }
+        }
+        private void GetTotal()
+        {
+            try
+            {
+                var total = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount));
+                var type = (TransactionTypes)TypeCB.SelectedItem;
+                switch (type)
+                {
+                    case TransactionTypes.InHouse:
+                        total += total * 0.12m;
+                        break;
+                    case TransactionTypes.Order:
+                        total += ((Transaction)ViewGrid.DataContext).Delivery;
+                        break;
+                }
+                Paid_TB.Text = Total_TB.Text = total.ToString("0.00");
+            }
+            catch
+            {
+
+            }
+        }
+        private void CategoryCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var query = DB.Products.AsQueryable();
+                if (CategoryCB.SelectedIndex != 0)
+                {
+                    query = query.Where(p => p.CategoryId == (int)CategoryCB.SelectedValue);
+                }
+                ProductsLB.ItemsSource = query.OrderBy(p => p.Name).ToList();
+            }
+            catch
+            {
+
+            }
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                ProductCB.SelectedItem = (e.OriginalSource as FrameworkElement).DataContext;
+                //Pop.IsOpen = false;
+                AmountTB.Focus();
+                AmountTB.SelectAll();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void PD1_PrintPage(object sender, PrintPageEventArgs e)
+        {            
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+            StringFormat sf1 = new StringFormat(StringFormatFlags.DirectionRightToLeft);
+            sf1.Alignment = StringAlignment.Near;
+            sf1.LineAlignment = StringAlignment.Near;
+            StringFormat sf2 = new StringFormat();
+            sf2.Alignment = StringAlignment.Far;
+            sf2.LineAlignment = StringAlignment.Near;
+            float current_height = e.MarginBounds.Top;
+            float temp_height = 0;
+
+
+            e.Graphics.DrawString("Suez Fish", new System.Drawing.Font("Cambria", 16), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
+            current_height += 50;
+
+            e.Graphics.DrawString("الرقــم  :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
+            e.Graphics.DrawString(Number.Text, new System.Drawing.Font("tahoma", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
+            current_height += 30;
+
+            e.Graphics.DrawString("التاريخ :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
+            e.Graphics.DrawString(DateDTP.Value.Value.ToString(), new System.Drawing.Font("tahoma", 12), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
+            current_height += 35;
+            e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
+            current_height += 5;
+            e.Graphics.DrawString("الصنف", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 120, current_height, e.MarginBounds.Width - 120, 30), sf1);
+            e.Graphics.DrawString("السعر", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 80, current_height, 40, 30), sf1);
+            e.Graphics.DrawString("الكمية", new System.Drawing.Font("Arial", 9), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 30, 30), sf1);
+            e.Graphics.DrawString("الإجمالي", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf1);
+            current_height += 22;
+            e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
+            current_height += 5;
+            foreach (var saledetail in (ObservableCollection<SaleDetail>)Details_DG.ItemsSource)
+            {
+                var Product = saledetail.Product;
+                temp_height = e.Graphics.MeasureString(Product.Name, new System.Drawing.Font("Arial", 8), e.MarginBounds.Width - 120).Height;
+                temp_height = temp_height < 20 ? 15 : 30;
+                e.Graphics.DrawString(Product.Name, new System.Drawing.Font("Arial", 8), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 120, current_height, e.MarginBounds.Width - 120, temp_height), sf1);
+                e.Graphics.DrawString(Product.Price.ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 80, current_height, 40, temp_height), sf2);
+                e.Graphics.DrawString(saledetail.Amount.ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 30, temp_height), sf2);
+                e.Graphics.DrawString(saledetail.Total.ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, temp_height), sf2);
+                current_height += temp_height;
+            }
+            e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
+            current_height += 5;
+            e.Graphics.DrawString("الإجمالي", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
+            e.Graphics.DrawString(Total_TB.Text, new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
+            current_height += 30;
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                PD1.Print();
+            }
+            catch
+            {
+
+            }
+        }
 
     }
 }

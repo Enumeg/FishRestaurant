@@ -30,7 +30,11 @@ namespace FishRestaurant.Model.Entities
         public DbSet<Installment> Installments { get; set; }
 
         public DbSet<ComponentDamage> ComponentsDamage { get; set; }
-        public DbSet<ProductDamage> ProductsDamage { get; set; }       
+        public DbSet<ProductDamage> ProductsDamage { get; set; }
+
+
+        public DbSet<User> Users { get; set; }
+        
 
     }
 }

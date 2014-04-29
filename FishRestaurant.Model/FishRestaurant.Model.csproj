@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="Entities\Damage.cs" />
     <Compile Include="Entities\Installment.cs" />
+    <Compile Include="Entities\Outcome.cs" />
+    <Compile Include="Entities\Outcome_Types.cs" />
     <Compile Include="Entities\ProductComponents.cs" />
     <Compile Include="Entities\PurchaseDetail.cs" />
     <Compile Include="Entities\Category.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Entities\TransactionDetail.cs" />
     <Compile Include="Entities\Transfer.cs" />
     <Compile Include="Entities\TransferDetail.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\Components.cs" />
     <Compile Include="Services\CustomConfigration.cs" />

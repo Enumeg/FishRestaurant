@@ -11,4 +11,6 @@ namespace FishRestaurant.Model.Entities
     public enum Units : sbyte { كيلو, جرام }
     public enum PersonTypes : sbyte { Customer, Supplier }
 
+    public enum Groups : sbyte { Cashier ,  Admin }
+
 }

@@ -26,8 +26,8 @@ namespace FishRestaurant.WPF
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
-            {              
-                Initialize();          
+            {
+                Initialize();
             }
             catch
             {
@@ -38,7 +38,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                DB = new FRContext();                   
+                DB = new FRContext();
                 ComponentCB.ItemsSource = DB.Components.OrderBy(c => c.Name).ToList();
                 UnitCB.ItemsSource = Enum.GetValues(typeof(Units));
                 FillLB();
@@ -53,8 +53,8 @@ namespace FishRestaurant.WPF
             try
             {
                 var query = DB.Transfers.Where(p => p.Type == Type);
-                if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }                                      
-                if (DateSearch.Text != ""){query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }                                      
+                if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }
+                if (DateSearch.Text != "") { query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }
                 LB.ItemsSource = query.Include(p => p.TransferDetails).OrderBy(p => p.Number).ToList();
             }
             catch
@@ -76,7 +76,7 @@ namespace FishRestaurant.WPF
                 Details_DG.IsReadOnly = false;
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
-                    LB.SelectedIndex = -1;                    
+                    LB.SelectedIndex = -1;
                     Form.Set_Style(InfoGrid, Operations.Add);
                     ViewGrid.DataContext = new Transfer() { Date = DateDTP.Value.Value, Type = Type };
                     Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
@@ -220,7 +220,7 @@ namespace FishRestaurant.WPF
                 {
                     EditGrid.DataContext = Details_DG.SelectedItem;
                     AddBTN.Content = "Edit";
-                    var  TransferDetail =((TransferDetail)Details_DG.SelectedItem);
+                    var TransferDetail = ((TransferDetail)Details_DG.SelectedItem);
                     Amount = TransferDetail.Amount;
                     Unit = TransferDetail.Unit;
                 }
@@ -239,13 +239,13 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (!Details_DG.IsReadOnly)
+                if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
                 {
                     var TransferDetail = (TransferDetail)EditGrid.DataContext;
                     var amount = Type == Transaction_Types.In ? TransferDetail.Amount : TransferDetail.Amount * -1;
                     if (TransferDetail.Unit == Units.جرام) { amount *= 0.001m; }
                     //DB.Components.Find(TransferDetail.Component.Id).Stock -= amount;
-                    ((Transfer)ViewGrid.DataContext).TransferDetails.Remove(TransferDetail);
+                    DB.TransferDetails.Remove(TransferDetail);
                 }
             }
             catch
@@ -258,7 +258,8 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
+                if (LB.IsEnabled == false)
+                    Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, Type);
             }
             catch
             {

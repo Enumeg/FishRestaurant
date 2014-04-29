@@ -23,17 +23,17 @@ namespace FishRestaurant.Model.Entities
         public string Name { get; set; }
         public decimal AmountLimit { get; set; }        
         public decimal Stock { get; set; }
-        [NotMapped]
-        public decimal StoreStock { get { return ComponentsService.GetStock(this); } }
-        [NotMapped]
-        public decimal ShopStock { get { return ComponentsService.GetShopStock(this); } }
-        [NotMapped]
-        public int Status { get { return StoreStock > AmountLimit ? 1 : StoreStock == AmountLimit ? 0 : -1; } }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }
         public virtual ICollection<TransferDetail> TransferDetails { get; set; }
         public virtual ICollection<ProductComponents> ProductComponents { get; set; }
         public virtual ICollection<ComponentDamage> ComponentDamages { get; set; }
+        [NotMapped]
+        public decimal StoreStock { get; set; }
+        //[NotMapped]
+        //public decimal ShopStock { get { return ComponentsService.GetShopStock(this); } }
+        //[NotMapped]
+        //public int Status { get { return StoreStock > AmountLimit ? 1 : StoreStock == AmountLimit ? 0 : -1; } }
     }
 }

@@ -26,7 +26,11 @@ namespace FishRestaurant.Model.Entities
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<PurchaseDetail> PurchaseDetails { get; set; }
+        public DbSet<SaleDetail> SaleDetails { get; set; }
         public DbSet<Transfer> Transfers { get; set; }
+        public DbSet<TransferDetail> TransferDetails { get; set; }
+
         public DbSet<Installment> Installments { get; set; }
 
         public DbSet<ComponentDamage> ComponentsDamage { get; set; }

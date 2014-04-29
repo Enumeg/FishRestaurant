@@ -1,0 +1,49 @@
+﻿<Page x:Class="FishRestaurant.WPF.Stock" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:S="clr-namespace:Source;assembly=Source" FlowDirection="RightToLeft" Loaded="Page_Loaded"
+        Background="{StaticResource Page_Background}" Title="المخزون">
+    <Grid Name="Main_GD" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />           
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="الفئة :" Style="{StaticResource Label_TextBlock}" />
+            <TextBlock Grid.Column="2" Text="الصنف :" Style="{StaticResource Label_TextBlock}" />
+            <ComboBox Grid.Column="1" Style="{StaticResource Search_ComboBox}" Name="CategorySearchCB" SelectionChanged="FillDG" DisplayMemberPath="Name"
+                    SelectedValuePath="Id" />
+            <TextBox Grid.Column="3" Style="{StaticResource Search_TextBox}" Name="ComponentSearchTB" TextChanged="FillDG" />
+        </Grid>
+        <DataGrid Grid.Row="1" Name="ComponentsDG" Style="{StaticResource View_DataGrid}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="الفئة" Binding="{Binding Path=Category}" />
+                <DataGridTextColumn Header="الصنف" Binding="{Binding Path=Component}" Width="*" />
+                <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=AmountLimit}" />
+                <DataGridTextColumn Header="رصيد المخزن" Binding="{Binding Path=StoreStock}" />
+                <DataGridTextColumn Header="رصيد المحل" Binding="{Binding Path=ShopStock}" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Status}" Value="0">
+                            <Setter Property="Background" Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="1">
+                            <Setter Property="Background" Value="Green" />
+                            <Setter Property="Foreground" Value="White" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Status}" Value="-1">
+                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="Foreground" Value="White" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+    </Grid>
+</Page>

@@ -23,13 +23,13 @@ namespace FishRestaurant.WPF
     public partial class Login : Window
     {
 
-        FRContext DB;
+        FrContext DB;
 
 
         public Login()
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
         }
 
         private void Log_In_Click(object sender, RoutedEventArgs e)
@@ -77,12 +77,13 @@ namespace FishRestaurant.WPF
                     if (user.Password.GetHashCode().Equals(Password_TB.Password.GetHashCode()))
                     {
                         // check Group if Admin or Cashier
-
+                        App.User = user;
                         if (user.Group == 0)
                         {
                             // Cashier Pager
 
-                            Message.Show("Cashier", MessageBoxButton.OK, 10);
+                            Main m = new Main();
+                            m.ShowDialog();
                    
                         }
                         else

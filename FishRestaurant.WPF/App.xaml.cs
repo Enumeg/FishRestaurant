@@ -11,14 +11,14 @@ namespace FishRestaurant.WPF
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {      
+    {
+        public static User User { get; set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FRContext, Configuration>());
-            
-            var m = new Login();
+            User = new Model.Entities.User() { Group = Groups.Admin };
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FrContext, Configuration>());            
+            var m = new Main();
             
             m.ShowDialog();
         }        

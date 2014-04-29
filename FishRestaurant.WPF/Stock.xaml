@@ -25,7 +25,7 @@
                 <DataGridTextColumn Header="الصنف" Binding="{Binding Path=Component}" Width="*" />
                 <DataGridTextColumn Header="حد الشراء" Binding="{Binding Path=AmountLimit}" />
                 <DataGridTextColumn Header="رصيد المخزن" Binding="{Binding Path=StoreStock}" />
-                <DataGridTextColumn Header="رصيد المحل" Binding="{Binding Path=ShopStock}" />
+                <!--<DataGridTextColumn Header="رصيد المحل" Binding="{Binding Path=ShopStock}" />-->
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">

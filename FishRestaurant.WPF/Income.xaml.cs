@@ -21,12 +21,12 @@ namespace FishRestaurant.WPF
     /// </summary>
     public partial class Income : Page
     {
-        FRContext DB;
+        FrContext DB;
 
         public Income()
         {
             InitializeComponent();
-            DB = new FRContext();
+            DB = new FrContext();
 
         }
 
@@ -37,12 +37,12 @@ namespace FishRestaurant.WPF
             try
             {
                 IncomeDG.ItemsSource = DB.Transactions.Where(t => t.Date >= From_DTP.Value.Value && t.Date <= To_DTP.Value.Value &&
-                    (t.Type == Transaction_Types.ReBuy || t.Type == Transaction_Types.Sell)).Select(t => new
+                    (t.Type == TransactionTypes.ReBuy || t.Type == TransactionTypes.SellBack)).Select(t => new
                     {
                         Number = t.Number,
                         Date = t.Date,
                         Value = t.Paid,
-                        Type = t.Type == Transaction_Types.Sell ? "" : "",
+                        Type = t.Type == TransactionTypes.SellBack ? "" : "",
                         Person = t.Person.Name
                     }).Union(DB.Installments.Where(i => i.Date >= From_DTP.Value.Value && i.Date <= To_DTP.Value.Value && i.Person.Type == PersonTypes.Customer).Select(i => new
                     {

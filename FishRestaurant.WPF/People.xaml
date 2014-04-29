@@ -26,7 +26,7 @@
                 <cc:EditPanel Grid.Row="4" Grid.ColumnSpan="2" Name="EP" Add="EditPanel_Edit" Edit="EditPanel_Edit" Delete="EditPanel_Delete" />
             </Grid>
         </Border>
-        <Grid Grid.Column="2" Name="Info_GD">
+        <Grid Grid.Column="2" Name="InfoGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="35" />

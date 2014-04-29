@@ -16,10 +16,10 @@ namespace FishRestaurant.Model.Services
             {              
                 var Ins = component.TransferDetails.Where(t => t.Transfer.Type == TransactionTypes.Out);
                 var Outs = component.TransferDetails.Where(t => t.Transfer.Type == TransactionTypes.In);
-                var Coms = component.ProductComponents;
+                var ProComs = component.ProductComponents;
                 if (Ins.Count() > 0) { In = Ins.Sum(t => t.Amount * (t.Unit == Units.جرام ? 0.001m : 1)); }
                 if (Outs.Count() > 0) { Out = Outs.Sum(t => t.Amount * (t.Unit == Units.جرام ? 0.001m : 1)); }
-                foreach (var pc in Coms)
+                foreach (var pc in ProComs)
                 {
                     var amount = pc.Unit == Units.جرام ? pc.Amount * 0.001m : pc.Amount;
                     if (pc.Product.ProductsDamage.Count > 0) { Out += pc.Product.ProductsDamage.Sum(p => p.Amonut * amount); }
@@ -49,6 +49,14 @@ namespace FishRestaurant.Model.Services
                 //if (Ins.Count() > 0) { In += Ins.Sum(t => t.Amount * (t.Unit == Units.جرام ? 0.001m : 1)); }
                 //if (Outs.Count() > 0) { Out += Outs.Sum(t => t.Amount * (t.Unit == Units.جرام ? 0.001m : 1)); }
                 if (Coms.Count() > 0) { Out += Coms.Sum(t => t.Amonut * (t.Unit == Units.جرام ? 0.001m : 1)); }
+                var ProComs = component.ProductComponents;              
+                foreach (var pc in ProComs)
+                {
+                    var amount = pc.Unit == Units.جرام ? pc.Amount * 0.001m : pc.Amount;
+                    if (pc.Product.ProductsDamage.Count > 0) { Out += pc.Product.ProductsDamage.Sum(p => p.Amonut * amount); }
+                    if (pc.Product.SaleDetails.Count > 0) { Out += pc.Product.SaleDetails.Where(s => s.Transaction.Type == TransactionTypes.InHouse || s.Transaction.Type == TransactionTypes.TakeAway).Sum(s => s.Amount * amount); 
+                        In += pc.Product.SaleDetails.Where(s => s.Transaction.Type == TransactionTypes.SellBack).Sum(s => s.Amount * amount); }
+                }
                 In += component.Stock;
                 stock = Math.Round(In - Out, 3);
                 component.StoreStock = stock;

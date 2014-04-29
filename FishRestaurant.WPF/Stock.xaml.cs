@@ -60,7 +60,6 @@ namespace FishRestaurant.WPF
                     Category = c.Category.Name,
                     Component = c.Name,
                     AmountLimit = c.AmountLimit,
-                    ShopStock = ComponentsService.GetShopStock(c),
                     StoreStock = ComponentsService.GetStock(c),
                     Status = c.StoreStock > c.AmountLimit ? 1 : c.StoreStock == c.AmountLimit ? 0 : -1
                 }

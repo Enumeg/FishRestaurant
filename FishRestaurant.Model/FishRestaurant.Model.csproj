@@ -75,6 +75,7 @@
     <Compile Include="Entities\TransactionDetail.cs" />
     <Compile Include="Entities\Transfer.cs" />
     <Compile Include="Entities\TransferDetail.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\Components.cs" />
     <Compile Include="Services\CustomConfigration.cs" />

@@ -36,7 +36,11 @@ namespace FishRestaurant.Model.Entities
         public DbSet<OutcomeType> OutcomeTypes { get; set; }
 
         public DbSet<ComponentDamage> ComponentsDamage { get; set; }
-        public DbSet<ProductDamage> ProductsDamage { get; set; }       
+        public DbSet<ProductDamage> ProductsDamage { get; set; }
+
+
+        public DbSet<User> Users { get; set; }
+        
 
     }
 }

@@ -1,4 +1,5 @@
-﻿<Page x:Class="FishRestaurant.WPF.Components" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<Page x:Class="FishRestaurant.WPF.Components" 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:S="clr-namespace:Source;assembly=Source" FlowDirection="RightToLeft" Loaded="Page_Loaded"
         Background="{StaticResource Page_Background}" Title="المكونات">
     <Grid Name="Main_GD" Background="Transparent">

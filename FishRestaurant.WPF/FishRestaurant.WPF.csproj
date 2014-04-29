@@ -108,8 +108,14 @@
     <Compile Include="Components.xaml.cs">
       <DependentUpon>Components.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Income.xaml.cs">
+      <DependentUpon>Income.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Installments.xaml.cs">
       <DependentUpon>Installments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Outcomes.xaml.cs">
       <DependentUpon>Outcomes.xaml</DependentUpon>
@@ -159,6 +165,9 @@
     <Compile Include="Transfers.xaml.cs">
       <DependentUpon>Transfers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Users.xaml.cs">
+      <DependentUpon>Users.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -199,6 +208,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Income.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Installments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -210,6 +223,10 @@
     <Page Include="OutcomeTypes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="People.xaml">
       <SubType>Designer</SubType>
@@ -311,6 +328,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\IBTN.png" />
@@ -332,6 +353,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\login.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

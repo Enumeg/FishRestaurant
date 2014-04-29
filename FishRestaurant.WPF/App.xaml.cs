@@ -15,8 +15,11 @@ namespace FishRestaurant.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FrContext, Configuration>());
-            var m = new Main();
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FRContext, Configuration>());
+            
+            var m = new Login();
+            
             m.ShowDialog();
         }        
     }

@@ -10,4 +10,7 @@ namespace FishRestaurant.Model.Entities
     public enum TransactionTypes : sbyte { Buy, ReBuy, InHouse, TakeAway, Order, SellBack, In, Out }
     public enum Units : sbyte { كيلو, جرام }
     public enum PersonTypes : sbyte { Customer, Supplier }
+
+    public enum Groups : sbyte { Cashier ,  Admin }
+
 }

@@ -54,7 +54,7 @@ namespace FishRestaurant.Model.Services
                 {
                     var amount = pc.Unit == Units.جرام ? pc.Amount * 0.001m : pc.Amount;
                     if (pc.Product.ProductsDamage.Count > 0) { Out += pc.Product.ProductsDamage.Sum(p => p.Amonut * amount); }
-                    if (pc.Product.SaleDetails.Count > 0) { Out += pc.Product.SaleDetails.Where(s => s.Transaction.Type == TransactionTypes.InHouse || s.Transaction.Type == TransactionTypes.TakeAway).Sum(s => s.Amount * amount); 
+                    if (pc.Product.SaleDetails.Count > 0) { Out += pc.Product.SaleDetails.Where(s => s.Transaction.Type != TransactionTypes.SellBack).Sum(s => s.Amount * amount); 
                         In += pc.Product.SaleDetails.Where(s => s.Transaction.Type == TransactionTypes.SellBack).Sum(s => s.Amount * amount); }
                 }
                 In += component.Stock;

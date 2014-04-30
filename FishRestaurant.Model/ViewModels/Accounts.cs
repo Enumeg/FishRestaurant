@@ -10,7 +10,7 @@ namespace FishRestaurant.Model.ViewModels
     {
         public decimal Debtor { get; set; }
         public decimal Creditor { get; set; }
-        public decimal balance { get; set; }
+        public decimal Balance { get; set; }
         public string Description { get; set; }
         public int Number { get; set; }
         public DateTime Date { get; set; }        

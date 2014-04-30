@@ -52,7 +52,7 @@ namespace FishRestaurant.WPF
             {
                 var query = DB.Components.Where(c => c.Name.StartsWith(ComponentSearchTB.Text));
                 if (CategorySearchCB.SelectedIndex > 0) { query = query.Where(c => c.CategoryId == (int)CategorySearchCB.SelectedValue); }
-                ComponentsDG.ItemsSource = query.OrderBy(c => c.Name).ToList();
+                ComponentsDG.ItemsSource = query.OrderBy(c => c.CategoryId).ToList();
             }
             catch
             {

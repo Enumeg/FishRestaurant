@@ -247,41 +247,4 @@
     </Style>
 
 
-    <Style TargetType="{x:Type Button}" x:Key="Closed_Tab">
-        <Setter Property="BorderThickness" Value="2,2,2,0" />
-        <Setter Property="FontFamily" Value="Droid Arabic Naskh" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="BorderBrush" Value="{StaticResource Border}" />
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="Background" Value="DarkRed" />
-        <Setter Property="Margin" Value="0,3,0,0" />
-        <!--<Setter Property="Visibility" Value="Collapsed" />-->
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="b" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5,5,0,0"
-                            Background="{TemplateBinding Background}" Padding="8,3">
-                        <Grid x:Name="g">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Button x:Name="btn" Margin="5,0,0,0" Grid.Column="1" Style="{StaticResource Close}" Click="Close_Click" />
-                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}"
-                                    FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FF171717" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter Property="Background" Value="#FF171717" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 </ResourceDictionary>

@@ -18,7 +18,7 @@ namespace FishRestaurant.WPF
             base.OnStartup(e);
             User = new Model.Entities.User() { Group = Groups.Admin };
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FrContext, Configuration>());            
-            var m = new Main();
+            var m = new Management();
             
             m.ShowDialog();
         }        

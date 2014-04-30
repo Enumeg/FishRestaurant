@@ -88,6 +88,7 @@ namespace FishRestaurant.WPF
                 if (NumberSearch.Text != "") { query = query.Where(p => p.Number == int.Parse(NumberSearch.Text)); }
                 if (PersonSearch.SelectedIndex > 0) { query = query.Where(p => p.PersonId == (int)PersonSearch.SelectedValue); }
                 if (TypeSearchCB.SelectedIndex > 0) { query = query.Where(p => p.Type == (TransactionTypes)TypeSearchCB.SelectedValue); }
+                else { query = query.Where(t => t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.ReBuy); }
                 if (DateSearch.Text != "") { query = query.Where(p => DbFunctions.TruncateTime(p.Date) == DbFunctions.TruncateTime(DateSearch.Value.Value)); }
                 LB.ItemsSource = query.Include(p => p.PurchaseDetails).OrderBy(p => p.Number).ToList();
             }
@@ -249,8 +250,8 @@ namespace FishRestaurant.WPF
             {
                 if (Details_DG.SelectedIndex != -1)
                 {
-                    EditGrid.DataContext = Details_DG.SelectedItem;
                     AddBTN.Content = "Edit";
+                    EditGrid.DataContext = Details_DG.SelectedItem;
                     Amount = ((SaleDetail)Details_DG.SelectedItem).Amount;
                 }
                 else
@@ -268,9 +269,18 @@ namespace FishRestaurant.WPF
         {
             try
             {
+
                 if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
                 {
-                    DB.SaleDetails.Remove((SaleDetail)EditGrid.DataContext);
+                    var saledetail =(SaleDetail)EditGrid.DataContext;
+                    if (saledetail.Id == 0)
+                    {
+                        ((Transaction)ViewGrid.DataContext).SaleDetails.Remove(saledetail);
+                    }
+                    else
+                    {
+                        DB.SaleDetails.Remove(saledetail);
+                    }
                     GetTotal();
                 }
             }
@@ -296,6 +306,7 @@ namespace FishRestaurant.WPF
             try
             {
                 /// 3awzeeeno lma ye5tar yenzel el Price Automatic
+                if(AddBTN.Content.ToString() != "Edit")
                 Price.Text = ((Product)ProductCB.SelectedItem).Price.ToString();// ya salam bs keda :D
             }
             catch

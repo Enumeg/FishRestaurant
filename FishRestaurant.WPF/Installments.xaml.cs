@@ -75,7 +75,7 @@ namespace FishRestaurant.WPF
             {
                 if (((Button)sender).Name.Split('_')[0] == "Add")
                 {
-                    pop.DataContext = new Installment() { Date= DateTime.Now};
+                    pop.DataContext = new Installment() { Date = DateTime.Now, Number = GetNumber() };
                 }
                 else
                 {
@@ -89,6 +89,14 @@ namespace FishRestaurant.WPF
             {
 
             }
+        }
+
+        private int GetNumber()
+        {
+            if (Date.Value == null) { Date.Value = DateTime.Now; }
+            var date = Date.Value.Value.Date;
+            var num = DB.Installments.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month);
+            return num.Count() != 0 ? (num.Max(p => p.Number) + 1) : int.Parse(string.Format("{0}001", date.ToString("yyMM")));
         }
         private void EditPanel_Delete(object sender, EventArgs e)
         {
@@ -112,8 +120,8 @@ namespace FishRestaurant.WPF
         }
         private void FillDG(object sender, EventArgs e)
         {
-            if(this.IsLoaded)
-            FillDG();
+            if (this.IsLoaded)
+                FillDG();
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -124,7 +132,7 @@ namespace FishRestaurant.WPF
                 DB.SaveChanges();
                 if ((bool)New.IsChecked)
                 {
-                    pop.DataContext = new Installment();
+                    pop.DataContext = new Installment() { Date = DateTime.Now};
                 }
                 else
                 {
@@ -138,5 +146,8 @@ namespace FishRestaurant.WPF
                 Confirm.Check(false);
             }
         }
+
+       
+    
     }
 }

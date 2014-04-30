@@ -116,12 +116,14 @@ namespace FishRestaurant.WPF
                     if (ProductComs.Id == 0) { Product.ProductComponents.Add(ProductComs); }
                     DB.SaveChanges();
                     Confirm.Check(true);
-                }
+                
 
                 if ((bool)New.IsChecked)
                 {
-                    MainGrid.DataContext = new Product();
+                    MainGrid.DataContext = new ProductComponents();
                 }
+                
+               }
                 else
                 {
                     MainGrid.RowDefinitions[0].Height = new GridLength(0);
@@ -129,6 +131,7 @@ namespace FishRestaurant.WPF
                     MainGrid.RowDefinitions[2].Height = new GridLength(35);
                     ComponentsLB.IsEnabled = true;
                 }
+
 
                 FillLB();
             }

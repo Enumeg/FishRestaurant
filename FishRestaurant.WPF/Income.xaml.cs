@@ -1,6 +1,7 @@
 ﻿using FishRestaurant.Model.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace FishRestaurant.WPF
         {
             InitializeComponent();
             DB = new FrContext();
-
+            FillDG();
         }
 
 
@@ -35,23 +36,26 @@ namespace FishRestaurant.WPF
         {
 
             try
-            {
-                IncomeDG.ItemsSource = DB.Transactions.Where(t => t.Date >= From_DTP.Value.Value && t.Date <= To_DTP.Value.Value &&
-                    (t.Type == TransactionTypes.ReBuy || t.Type == TransactionTypes.SellBack)).Select(t => new
+            {                
+                IncomeDG.ItemsSource = DB.Transactions.Where(t => DbFunctions.TruncateTime(t.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
+                    && DbFunctions.TruncateTime(t.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) &&
+                    (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.SellBack)).Select(t => new
                     {
                         Number = t.Number,
                         Date = t.Date,
                         Value = t.Paid,
-                        Type = t.Type == TransactionTypes.SellBack ? "" : "",
+                        Type = t.Type == TransactionTypes.Order ? "Order" : t.Type== TransactionTypes.InHouse ? "In House" : t.Type== TransactionTypes.TakeAway ? "Take Away" : "مرتجع شراء" ,
+
                         Person = t.Person.Name
-                    }).Union(DB.Installments.Where(i => i.Date >= From_DTP.Value.Value && i.Date <= To_DTP.Value.Value && i.Person.Type == PersonTypes.Customer).Select(i => new
+                    }).Union(DB.Installments.Where(i => DbFunctions.TruncateTime(i.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
+                        && DbFunctions.TruncateTime(i.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) && i.Person.Type == PersonTypes.Customer).Select(i => new
                     {
                         Number = 0,
                         Date = i.Date,
                         Value = i.Value,
-                        Type = "",
+                        Type = "قسط عميل",
                         Person = i.Person.Name
-                    }));
+                    })).ToList();
 
 
             }
@@ -64,7 +68,7 @@ namespace FishRestaurant.WPF
 
         private void From_DTP_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-
+            FillDG();
         }
 
 

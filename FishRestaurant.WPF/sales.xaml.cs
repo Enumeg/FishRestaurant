@@ -64,7 +64,7 @@ namespace FishRestaurant.WPF
                 ProductCB.ItemsSource = DB.Products.OrderBy(p => p.Name).ToList();
                 PersonCB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 TypeCB.ItemsSource = new[] { TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
-                TypeSearchCB.ItemsSource = new object[] { "الكل", TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };                
+                TypeSearchCB.ItemsSource = new object[] { "الكل", TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
                 TypeCB.SelectedIndex = 1;
                 var customers = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 customers.Insert(0, new Person() { Id = 0, Name = "الكل" });
@@ -272,7 +272,7 @@ namespace FishRestaurant.WPF
 
                 if (!Details_DG.IsReadOnly && e.Key == System.Windows.Input.Key.Delete)
                 {
-                    var saledetail =(SaleDetail)EditGrid.DataContext;
+                    var saledetail = (SaleDetail)EditGrid.DataContext;
                     if (saledetail.Id == 0)
                     {
                         ((Transaction)ViewGrid.DataContext).SaleDetails.Remove(saledetail);
@@ -306,8 +306,8 @@ namespace FishRestaurant.WPF
             try
             {
                 /// 3awzeeeno lma ye5tar yenzel el Price Automatic
-                if(AddBTN.Content.ToString() != "Edit")
-                Price.Text = ((Product)ProductCB.SelectedItem).Price.ToString();// ya salam bs keda :D
+                if (AddBTN.Content.ToString() != "Edit")
+                    Price.Text = ((Product)ProductCB.SelectedItem).Price.ToString();// ya salam bs keda :D
             }
             catch
             {
@@ -355,6 +355,10 @@ namespace FishRestaurant.WPF
                     {
                         TotalsGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Auto);
                         TotalsGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+                    }
+                    else if ((TransactionTypes)TypeCB.SelectedItem == TransactionTypes.SellBack)
+                    {
+                        Pop.IsOpen = false;
                     }
                     else
                     {
@@ -436,7 +440,7 @@ namespace FishRestaurant.WPF
             sf2.LineAlignment = StringAlignment.Near;
             float current_height = e.MarginBounds.Top;
             float temp_height = 0;
-
+            var saleDetails = ((Transaction)Details_GD.DataContext).SaleDetails;
 
             e.Graphics.DrawString("Suez Fish", new System.Drawing.Font("Cambria", 16), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
             current_height += 50;
@@ -457,7 +461,7 @@ namespace FishRestaurant.WPF
             current_height += 22;
             e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
             current_height += 5;
-            foreach (var saledetail in (ObservableCollection<SaleDetail>)Details_DG.ItemsSource)
+            foreach (var saledetail in saleDetails)
             {
                 var Product = saledetail.Product;
                 temp_height = e.Graphics.MeasureString(Product.Name, new System.Drawing.Font("Arial", 8), e.MarginBounds.Width - 120).Height;
@@ -470,9 +474,28 @@ namespace FishRestaurant.WPF
             }
             e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
             current_height += 5;
+            if ((TransactionTypes)TypeCB.SelectedItem == TransactionTypes.Order)
+            {
+                e.Graphics.DrawString("المجموع", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
+                e.Graphics.DrawString(saleDetails.Sum(s => s.Amount * s.Price).ToString("0.00"), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
+                current_height += 30;
+                e.Graphics.DrawString("التوصيل", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
+                e.Graphics.DrawString(DeliveryTB.Text, new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
+                current_height += 30;
+
+            }
+            else if ((TransactionTypes)TypeCB.SelectedItem == TransactionTypes.InHouse)
+            {
+                e.Graphics.DrawString("المجموع", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
+                e.Graphics.DrawString(saleDetails.Sum(s => s.Amount * s.Price).ToString("0.00"), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
+                current_height += 30;
+                e.Graphics.DrawString("الخدمة", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
+                e.Graphics.DrawString((decimal.Parse(Total_TB.Text) * 0.12m).ToString("0.00"), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
+                current_height += 30;
+
+            }
             e.Graphics.DrawString("الإجمالي", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 50, 30), sf1);
             e.Graphics.DrawString(Total_TB.Text, new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, 30), sf2);
-            current_height += 30;
         }
         private void Print_Click(object sender, RoutedEventArgs e)
         {
@@ -507,6 +530,33 @@ namespace FishRestaurant.WPF
             catch
             {
                 Confirm.Check(false);
+            }
+        }
+        private void Number_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == System.Windows.Input.Key.Enter && Number.Text != "" && (TransactionTypes)TypeCB.SelectedItem == TransactionTypes.SellBack)
+                {
+                    var num = int.Parse(Number.Text);
+                    foreach (var trd in DB.Transactions.FirstOrDefault(t => t.Number == num && (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.ReBuy)).SaleDetails)
+                    {
+                        ((Transaction)ViewGrid.DataContext).SaleDetails.Add(new SaleDetail()
+                        {
+                            Product = trd.Product,
+                            ProductId = trd.ProductId,
+                            Amount = trd.Amount,
+                            Price = trd.Price,
+                            Total = trd.Total
+                        });
+                    }
+                    GetTotal();
+                    e.Handled = true;
+                }
+            }
+            catch
+            {
+
             }
         }
 

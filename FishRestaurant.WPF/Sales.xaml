@@ -56,7 +56,7 @@
                 <TextBlock Grid.Column="2" Style="{StaticResource Label_TextBlock}" Text="التاريخ :" />
                 <TextBlock Grid.Column="4" Style="{StaticResource Label_TextBlock}" Text="العميل :" />
                 <TextBlock Grid.Column="6" Style="{StaticResource Label_TextBlock}" Text="النوع :" />
-                <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Text="{Binding Path=Number,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="Number" />
+                <TextBox Grid.Column="1" Style="{StaticResource View_TextBox}" Text="{Binding Path=Number,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="Number" PreviewKeyDown="Number_PreviewKeyDown"/>
                 <ex:DateTimePicker Grid.Column="3" Value="{Binding Path=Date}" Style="{StaticResource View_DateTimePicker}" Name="DateDTP" ValueChanged="GetNumber"/>
                 <ComboBox Grid.Column="5" Style="{StaticResource View_ComboBox}" Name="PersonCB" SelectedItem="{Binding Path=Person}" DisplayMemberPath="Name" />
                 <ComboBox Grid.Column="7" Style="{StaticResource View_ComboBox}" Name="TypeCB" SelectedItem="{Binding Path=Type}" SelectionChanged="GetNumber" />

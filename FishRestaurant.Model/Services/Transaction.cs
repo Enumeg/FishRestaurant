@@ -18,9 +18,14 @@ namespace FishRestaurant.WPF.Services
                 var num = DB.Transfers.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month && p.Type == Type);
                 return num.Count() != 0 ? (num.Max(p => p.Number) + 1).ToString() : string.Format("{0}001", date.ToString("yyMM"));
             }
+            else if (Type == TransactionTypes.Buy || Type == TransactionTypes.ReBuy)
+            {
+                var num = DB.Transactions.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month && (p.Type ==  TransactionTypes.Buy || p.Type ==  TransactionTypes.ReBuy));
+                return num.Count() != 0 ? (num.Max(p => p.Number) + 1).ToString() : string.Format("{0}001", date.ToString("yyMM"));
+            }
             else
             {
-                var num = DB.Transactions.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month && p.Type == Type);
+                var num = DB.Transactions.Where(p => p.Date.Year == date.Year && p.Date.Month == date.Month && (p.Type != TransactionTypes.Buy && p.Type != TransactionTypes.ReBuy));
                 return num.Count() != 0 ? (num.Max(p => p.Number) + 1).ToString() : string.Format("{0}001", date.ToString("yyMM"));
             }
         }

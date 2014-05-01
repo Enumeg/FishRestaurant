@@ -29,9 +29,9 @@ namespace FishRestaurant.WPF
         public People(PersonTypes type)
         {
             InitializeComponent();
-           
+
             Type = type;
-            Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";            
+            Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";
             if (App.User != null && App.User.Group == Groups.Cashier)
             {
                 InfoGrid.RowDefinitions[1].Height = InfoGrid.RowDefinitions[2].Height = new GridLength(0);
@@ -101,10 +101,13 @@ namespace FishRestaurant.WPF
                 {
                     if (LB.SelectedIndex == -1)
                     {
-                        if (DB.People.FirstOrDefault(p => p.Address == AddressTB.Text && p.Phone == TelephoneTB.Text) != null)
+                        if (DB.People.FirstOrDefault(p => p.Address == AddressTB.Text && p.Phone == TelephoneTB.Text) == null)
                             DB.People.Add(MainGrid.DataContext as Person);
                         else
+                        {
                             Message.Show("يوجد عميل بنفس العنوان ورقم التليفون", MessageBoxButton.OKCancel);
+                            return;
+                        }
                     }
                     DB.SaveChanges();
                     Confirm.Check(true);
@@ -219,10 +222,10 @@ namespace FishRestaurant.WPF
                 FillLB();
                 GetAccounts();
             }
-            catch 
+            catch
             {
-                
-                  
+
+
             }
         }
     }

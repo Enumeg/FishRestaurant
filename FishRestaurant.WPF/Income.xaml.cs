@@ -1,4 +1,5 @@
 ﻿using FishRestaurant.Model.Entities;
+using FishRestaurant.Model.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -31,53 +32,82 @@ namespace FishRestaurant.WPF
             FillDG();
         }
 
-
         private void FillDG()
         {
-
             try
-            {       
-         
-                var inc = DB.Transactions.Where(t => DbFunctions.TruncateTime(t.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
-                                                && DbFunctions.TruncateTime(t.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) &&
-                                                (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.SellBack));
+            {
+                var inc_list = new List<IncomeDG>();
 
+                decimal total = 0;
 
                 var ins = DB.Installments.Where(i => DbFunctions.TruncateTime(i.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
-                        && DbFunctions.TruncateTime(i.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) && i.Person.Type == PersonTypes.Customer);
+                     && DbFunctions.TruncateTime(i.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) && i.Person.Type == PersonTypes.Customer).ToList();
 
-              
 
-                IncomeDG.ItemsSource = inc.Select(t => new
+                total += ins.Sum(c=> c.Value);
+
+                foreach (var i in ins)
+                {
+                   
+                    inc_list.Add(new IncomeDG()
                     {
-                        Number = t.Number,
-                        Date = t.Date,
-                        Value = t.Paid,
-                        Type = t.Type == TransactionTypes.Order ? "Order" : t.Type== TransactionTypes.InHouse ? "In House" : t.Type== TransactionTypes.TakeAway ? "Take Away" : "مرتجع شراء" ,
 
-                        Person = t.Person.Name
-                    }).Union(ins.Select(i => new
-                    {
-                        Number = 0,
                         Date = i.Date,
-                        Value = i.Value,
+                        Number = i.Number,
                         Type = "قسط عميل",
+                        Value = i.Value,
                         Person = i.Person.Name
-                    })).ToList();
+
+                         
+
+                    });
+                }
 
 
-                  var tot = inc.Sum(i => i.Paid) + ins.Sum(inss=> inss.Value);
 
-                 
 
+                var inc = DB.Transactions.Where(t => DbFunctions.TruncateTime(t.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
+                                               && DbFunctions.TruncateTime(t.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) &&
+                                               (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.SellBack)).ToList();
+
+                total += inc.Sum(c => c.Paid);
+
+                foreach (var i in inc)
+                {
+                  inc_list.Add(new IncomeDG()
+                  {
+                        Date   = i.Date,
+                        Number = i.Number,
+                        Type   = i.Type == TransactionTypes.Order ? "Order" : i.Type == TransactionTypes.InHouse ? "In House" : i.Type == TransactionTypes.TakeAway ? "Take Away" : "مرتجع شراء",
+                        Value  = i.Paid,
+                        Person = i.Person.Name
+
+
+
+                   });
+                }
+
+
+                inc_list.Add(new IncomeDG()
+                {
+                    
+                    Value = total
+
+                });
+
+
+                IncomeDG.ItemsSource = inc_list;
+
+             
             }
             catch
             {
-
-
+                
+                
             }
         }
 
+  
         private void From_DTP_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             FillDG();

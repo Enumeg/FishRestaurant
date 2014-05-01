@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit"
-      xmlns:cc="clr-namespace:Source;assembly=Source" Background="{StaticResource Page_Background}" Loaded="Page_Loaded"
+      xmlns:cc="clr-namespace:Source;assembly=Source" Background="{StaticResource Page_Background}" 
+      Loaded="Page_Loaded"
       FlowDirection="RightToLeft">
     <Grid>
         <Grid.ColumnDefinitions>

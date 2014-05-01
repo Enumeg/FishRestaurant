@@ -55,8 +55,19 @@ namespace FishRestaurant.WPF
             {
                 var query = DB.Outcomes.Where(c => DbFunctions.TruncateTime(c.Date) >= DbFunctions.TruncateTime(SearchFromDateDTP.Value.Value) &&
                    DbFunctions.TruncateTime(c.Date) <= DbFunctions.TruncateTime(SearchToDateDTP.Value.Value));
+
+               
                 if (OutcomeTypeSearch.SelectedIndex > 0) { query = query.Where(c => c.OutcomeTypeId == ((OutcomeType)OutcomeTypeSearch.SelectedItem).Id); }
-                OutcomeDG.ItemsSource = query.OrderBy(c => c.Date).ToList();
+               
+                var lis =  query.OrderBy(c => c.Date).ToList();
+
+                lis.Add(new Outcome() {
+                    Date = DateTime.Now,   
+                    Value = query.Sum(c => c.Value)
+                
+                });
+                
+                OutcomeDG.ItemsSource = lis;
             }
             catch
             {

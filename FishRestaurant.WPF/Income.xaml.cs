@@ -36,10 +36,19 @@ namespace FishRestaurant.WPF
         {
 
             try
-            {                
-                IncomeDG.ItemsSource = DB.Transactions.Where(t => DbFunctions.TruncateTime(t.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
-                    && DbFunctions.TruncateTime(t.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) &&
-                    (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.SellBack)).Select(t => new
+            {       
+         
+                var inc = DB.Transactions.Where(t => DbFunctions.TruncateTime(t.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
+                                                && DbFunctions.TruncateTime(t.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) &&
+                                                (t.Type != TransactionTypes.Buy && t.Type != TransactionTypes.SellBack));
+
+
+                var ins = DB.Installments.Where(i => DbFunctions.TruncateTime(i.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
+                        && DbFunctions.TruncateTime(i.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) && i.Person.Type == PersonTypes.Customer);
+
+              
+
+                IncomeDG.ItemsSource = inc.Select(t => new
                     {
                         Number = t.Number,
                         Date = t.Date,
@@ -47,8 +56,7 @@ namespace FishRestaurant.WPF
                         Type = t.Type == TransactionTypes.Order ? "Order" : t.Type== TransactionTypes.InHouse ? "In House" : t.Type== TransactionTypes.TakeAway ? "Take Away" : "مرتجع شراء" ,
 
                         Person = t.Person.Name
-                    }).Union(DB.Installments.Where(i => DbFunctions.TruncateTime(i.Date) >= DbFunctions.TruncateTime(From_DTP.Value.Value)
-                        && DbFunctions.TruncateTime(i.Date) <= DbFunctions.TruncateTime(To_DTP.Value.Value) && i.Person.Type == PersonTypes.Customer).Select(i => new
+                    }).Union(ins.Select(i => new
                     {
                         Number = 0,
                         Date = i.Date,
@@ -57,6 +65,10 @@ namespace FishRestaurant.WPF
                         Person = i.Person.Name
                     })).ToList();
 
+
+                  var tot = inc.Sum(i => i.Paid) + ins.Sum(inss=> inss.Value);
+
+                 
 
             }
             catch

@@ -29,10 +29,9 @@ namespace FishRestaurant.WPF
         public People(PersonTypes type)
         {
             InitializeComponent();
-            DB = new FrContext();
+           
             Type = type;
-            Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";
-            FillLB();
+            Title = type == PersonTypes.Customer ? "العملاء" : "الموردين";            
             if (App.User != null && App.User.Group == Groups.Cashier)
             {
                 InfoGrid.RowDefinitions[1].Height = InfoGrid.RowDefinitions[2].Height = new GridLength(0);
@@ -216,6 +215,8 @@ namespace FishRestaurant.WPF
         {
             try
             {
+                DB = new FrContext();
+                FillLB();
                 GetAccounts();
             }
             catch 

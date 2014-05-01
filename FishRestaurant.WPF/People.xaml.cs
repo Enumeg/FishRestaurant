@@ -101,7 +101,7 @@ namespace FishRestaurant.WPF
                 {
                     if (LB.SelectedIndex == -1)
                     {
-                        if (DB.People.First(p => p.Address == AddressTB.Text && p.Phone == TelephoneTB.Text) != null)
+                        if (DB.People.FirstOrDefault(p => p.Address == AddressTB.Text && p.Phone == TelephoneTB.Text) != null)
                             DB.People.Add(MainGrid.DataContext as Person);
                         else
                             Message.Show("يوجد عميل بنفس العنوان ورقم التليفون", MessageBoxButton.OKCancel);

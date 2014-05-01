@@ -4,11 +4,13 @@
         <GradientStop Color="#FF4667AF" Offset="0.45" />
         <GradientStop Color="#FF3A5AA1" Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="Page_Background" EndPoint="0.5,1" StartPoint="0.5,0">
+    <LinearGradientBrush x:Key="Page_Background1" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FF021645" Offset="0" />
         <GradientStop Color="#FF6593F5" Offset="0.18" />
         <GradientStop Color="#FF6593F5" Offset="0.798" />
         <GradientStop Color="#FF021645" Offset="1" />
     </LinearGradientBrush>
     <SolidColorBrush x:Key="Border" Color="LightGray" />
+    <ImageBrush ImageSource="/FishRestaurant.WPF;component/Images/Underwater-Wallpaper-44.jpg" x:Key="Page_Background" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#1D1E21" />
 </ResourceDictionary>

@@ -97,7 +97,7 @@ namespace FishRestaurant.WPF
 
                     case "BTN_Supplier": Page = SuppliersPage;break;
                     case "BTN_Customers": Page = CustomersPage; break;
-                    case "BTN_Users":  UsersPage.ShowDialog(); break;
+                    case "BTN_Users": UsersPage = new Users(); UsersPage.ShowDialog(); break;
                     case "BTN_Components": Page = ComponentPage; break;
                     case "BTN_Products": Page = ProductsPage; break;
 
@@ -122,8 +122,7 @@ namespace FishRestaurant.WPF
             }
             catch 
             {
-                
-                throw;
+                                
             }
 
         }
@@ -162,6 +161,11 @@ namespace FishRestaurant.WPF
             {
 
             }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         ///////////////////////////

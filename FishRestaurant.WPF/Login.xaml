@@ -1,8 +1,8 @@
 ﻿<Window x:Class="FishRestaurant.WPF.Login"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Style="{StaticResource Default_Window}" Width="350" Title="Suez Fish" FocusManager.FocusedElement="{Binding ElementName=User_name_TB}"
-        WindowStartupLocation="CenterScreen" Foreground="DarkRed"  BorderBrush="DarkRed">
-    <Grid>
+        WindowStartupLocation="CenterScreen" Foreground="DarkBlue" BorderBrush="#FF061B30" FontSize="20">
+    <Grid> 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -13,7 +13,7 @@
             <RowDefinition Height="35" />
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
-        <Image Grid.ColumnSpan="2" Source="Images/login.png" Stretch="Fill"/>
+        <Image Grid.ColumnSpan="2" Source="Images/img-seafood01.png" Stretch="Fill"/>
         <TextBlock Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="اسم المستخدم :" />
         <TextBlock Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="كلمــــــة المـــــــرور :" />
         <TextBox Grid.Column="1" Grid.Row="1" Name="User_name_TB" Style="{StaticResource Edit_TextBox}" />
@@ -26,7 +26,7 @@
     </Grid>
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF14191E" Offset="0.828" />
+            <GradientStop Color="#FF2372C1" Offset="0.828" />
             <GradientStop Color="White" Offset="0.664" />
             <GradientStop Color="White" Offset="0.016" />
         </LinearGradientBrush>

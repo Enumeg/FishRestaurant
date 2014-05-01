@@ -216,9 +216,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="{x:Type Button}" x:Key="Selected_Side" BasedOn="{StaticResource Side}">
+        <Setter Property="Background" Value="#FF1169D8" />
+    </Style>
     <Style TargetType="{x:Type Button}" x:Key="Printer_Button" BasedOn="{StaticResource Panel_Button}">
         <Setter Property="Content" Value="طباعة" />
-        <Setter Property="Tag" Value="/Maintenance;component/Images/printer-blue.ico" />
+        <Setter Property="Tag" Value="/FishRestaurant.WPF;component/Images/printer-blue.ico" />
         <Setter Property="Margin" Value="0,4,0,0" />
     </Style>
     <Style TargetType="{x:Type Button}" x:Key="Add_Button">

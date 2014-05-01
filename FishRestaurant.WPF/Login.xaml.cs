@@ -30,6 +30,7 @@ namespace FishRestaurant.WPF
         {
             InitializeComponent();
             DB = new FrContext();
+            var user = DB.Users.AsQueryable().ToList();
         }
 
         private void Log_In_Click(object sender, RoutedEventArgs e)
@@ -42,8 +43,8 @@ namespace FishRestaurant.WPF
             }
             catch
             {
-                
-                
+
+
             }
         }
 
@@ -57,8 +58,8 @@ namespace FishRestaurant.WPF
             }
             catch
             {
-                
-                
+
+
             }
         }
 
@@ -69,7 +70,7 @@ namespace FishRestaurant.WPF
             {
                 User_name_TB.Text.Trim();
                 Password_TB.Password.GetHashCode();
-
+                Window w;
                 var user = DB.Users.FirstOrDefault(c => c.Name.Equals(User_name_TB.Text.Trim()));
                 if (user != null)
                 {
@@ -81,36 +82,32 @@ namespace FishRestaurant.WPF
                         if (user.Group == 0)
                         {
                             // Cashier Pager
-
-                            Main m = new Main();
-                            m.ShowDialog();
-                   
+                            w = new Reception();
                         }
                         else
                         {
 
                             // Admin Page
+                            w = new Management();
 
-                            Message.Show("Admin", MessageBoxButton.OK, 10);
-                   
                         }
-
+                        this.Hide();
+                        w.ShowDialog();
                     }
-                    else 
+                    else
                     {
                         Message.Show("كلمة المرور غير صحيحة", MessageBoxButton.OK, 10);
-                   
+
                     }
 
                 }
-                else 
+                else
                 {
-                  // Not user
+                    // Not user
                     Message.Show("إسم المستخدم غير صحيح", MessageBoxButton.OK, 10);
-              
+
 
                 }
-
 
             }
             catch
@@ -120,6 +117,6 @@ namespace FishRestaurant.WPF
         }
 
 
-///////////////////////////////////////////////////
+        ///////////////////////////////////////////////////
     }
 }

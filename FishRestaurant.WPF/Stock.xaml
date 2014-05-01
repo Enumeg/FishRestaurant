@@ -32,14 +32,13 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Status}" Value="0">
                             <Setter Property="Background" Value="Yellow" />
+                            <Setter Property="Foreground" Value="Black" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="1">
                             <Setter Property="Background" Value="Green" />
-                            <Setter Property="Foreground" Value="White" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="-1">
                             <Setter Property="Background" Value="Red" />
-                            <Setter Property="Foreground" Value="White" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

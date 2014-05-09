@@ -62,7 +62,7 @@ namespace FishRestaurant.WPF
             {
                 DB = new FrContext();
                 ProductCB.ItemsSource = DB.Products.OrderBy(p => p.Name).ToList();
-                PersonCB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
+                PersonLB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 TypeCB.ItemsSource = new[] { TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
                 TypeSearchCB.ItemsSource = new object[] { "الكل", TransactionTypes.InHouse, TransactionTypes.Order, TransactionTypes.TakeAway, TransactionTypes.SellBack };
                 TypeCB.SelectedIndex = 1;
@@ -157,7 +157,7 @@ namespace FishRestaurant.WPF
 
                 if (((Button)sender).Name.Split('_')[0] == "Save")
                 {
-                    if (Notify.validate("من فضلك أدخل العميل", PersonCB.SelectedIndex, Main.GetWindow(this))) { return; }
+                    if (Notify.validate("من فضلك أدخل العميل", PersonLB.SelectedIndex, Main.GetWindow(this))) { return; }
                     if (LB.SelectedIndex == -1)
                     {
                         DB.Transactions.Add((Transaction)ViewGrid.DataContext);
@@ -438,11 +438,13 @@ namespace FishRestaurant.WPF
             StringFormat sf2 = new StringFormat();
             sf2.Alignment = StringAlignment.Far;
             sf2.LineAlignment = StringAlignment.Near;
-            float current_height = e.MarginBounds.Top;
+            float current_height = e.MarginBounds.Top - 20;
             float temp_height = 0;
             var saleDetails = ((Transaction)Details_GD.DataContext).SaleDetails;
 
-            e.Graphics.DrawString("Suez Fish", new System.Drawing.Font("Cambria", 16), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
+            e.Graphics.DrawString("أسماك السويس", new System.Drawing.Font("Cambria", 16), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
+            current_height += 20;
+            e.Graphics.DrawString("Fish'N Prawns", new System.Drawing.Font("Cambria", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
             current_height += 50;
 
             e.Graphics.DrawString("الرقــم  :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
@@ -512,7 +514,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if (Notify.validate("من فضلك أدخل العميل", PersonCB.SelectedIndex, Main.GetWindow(this))) { return; }
+                if (Notify.validate("من فضلك أدخل العميل", PersonLB.SelectedIndex, Main.GetWindow(this))) { return; }
                 DB.Transactions.Add((Transaction)ViewGrid.DataContext);
                 DB.SaveChanges();
                 Pop.IsOpen = false;
@@ -553,6 +555,67 @@ namespace FishRestaurant.WPF
                     GetTotal();
                     e.Handled = true;
                 }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void SelectCustomer(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if(DB.People.SingleOrDefault(p=>p.Name == PersonTB.Text) != null || PersonTB.Text =="")
+                { return; }
+                
+                CustomersPop.IsOpen = true;
+                int phone = 0;
+                if (int.TryParse(PersonTB.Text, out phone))
+                    PersonLB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer && (p.Phone.StartsWith(PersonTB.Text) || p.Mobile.StartsWith(PersonTB.Text))).OrderBy(p => p.Name).ToList();
+                else
+                    PersonLB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer && p.Name.StartsWith(PersonTB.Text)).OrderBy(p => p.Name).ToList();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void PersonLBChanged(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+                CustomersPop.IsOpen = false;
+        }
+
+        private void PersonLB_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            CustomersPop.IsOpen = false;
+        }
+
+        private void CustomerDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == System.Windows.Input.Key.Down)
+                    PersonLB.Focus();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void AddCustomer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddCustomer a = new AddCustomer(DB,PersonTB.Text);
+                a.ShowDialog();
+                PersonTB.Text = "";
+                PersonLB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
+                PersonLB.SelectedItem = FishRestaurant.WPF.AddCustomer.Customer;
+                CustomersPop.IsOpen = false;
             }
             catch
             {

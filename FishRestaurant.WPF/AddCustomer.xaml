@@ -1,0 +1,30 @@
+﻿<Window x:Class="FishRestaurant.WPF.AddCustomer" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Width="300" WindowStartupLocation="CenterScreen" 
+        Style="{StaticResource Default_Window}">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الإســـــــــم :"/>
+        <TextBlock Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="العنــــوان :" />
+        <TextBlock Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="التليفون :" />
+        <TextBlock Grid.Row="3" Style="{StaticResource Label_TextBlock}" Text="الموبايل :" />
+        <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource Edit_TextBox}" Text="{Binding Path=Name}"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource Edit_TextBox}" Text="{Binding Path=Address}"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource Edit_TextBox}" Text="{Binding Path=Phone}"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Style="{StaticResource Edit_TextBox}" Text="{Binding Path=Mobile}"/>
+        <CheckBox Grid.Column="0" Grid.Row="5" Name="New" Style="{StaticResource New_CheckBox}" Content="جديد"/>
+        <Button Grid.Column="1" Grid.Row="5" Content="حفظ" Click="Add" />
+    </Grid>   
+</Window>

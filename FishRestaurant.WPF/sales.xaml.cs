@@ -610,8 +610,10 @@ namespace FishRestaurant.WPF
         {
             try
             {
+                Pop.IsOpen = false;
                 AddCustomer a = new AddCustomer(DB,PersonTB.Text);
                 a.ShowDialog();
+                Pop.IsOpen = true;
                 PersonTB.Text = "";
                 PersonLB.ItemsSource = DB.People.Where(p => p.Type == PersonTypes.Customer).OrderBy(p => p.Name).ToList();
                 PersonLB.SelectedItem = FishRestaurant.WPF.AddCustomer.Customer;

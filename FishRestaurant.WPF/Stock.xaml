@@ -12,12 +12,14 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="الفئة :" Style="{StaticResource Label_TextBlock}" />
             <TextBlock Grid.Column="2" Text="الصنف :" Style="{StaticResource Label_TextBlock}" />
             <ComboBox Grid.Column="1" Style="{StaticResource Search_ComboBox}" Name="CategorySearchCB" SelectionChanged="FillDG" DisplayMemberPath="Name"
                     SelectedValuePath="Id" />
             <TextBox Grid.Column="3" Style="{StaticResource Search_TextBox}" Name="ComponentSearchTB" TextChanged="FillDG" />
+            <Button Grid.Column="10" Style="{StaticResource Printer_Button}" Name="Print" Click="Print_Click" />
         </Grid>
         <DataGrid Grid.Row="1" Name="ComponentsDG" Style="{StaticResource View_DataGrid}" IsReadOnly="True">
             <DataGrid.Columns>

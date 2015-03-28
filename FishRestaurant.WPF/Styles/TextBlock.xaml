@@ -13,7 +13,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="Droid Arabic Naskh" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="#1D1E21" />
+        <Setter Property="Foreground" Value="WhiteSmoke" />
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 </ResourceDictionary>

@@ -39,6 +39,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CPrinting">
+      <HintPath>..\..\..\VS 2010\CPrinting\CPrinting\bin\Release\CPrinting.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -392,6 +395,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AddC.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\printer-blue.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

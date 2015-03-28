@@ -195,6 +195,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
+                ViewGrid.DataContext = null;
                 ViewGrid.DataContext = LB.SelectedItem;
             }
             catch
@@ -237,7 +238,7 @@ namespace FishRestaurant.WPF
                 SaleDetail.OnPropertyChanged("Total");
                 GetTotal();
                 EditGrid.DataContext = new SaleDetail() { Amount = 1 };
-                if (!Pop.IsOpen) { Pop.IsOpen = true; }
+                // if (!Pop.IsOpen) { Pop.IsOpen = true; }
             }
             catch
             {
@@ -325,7 +326,10 @@ namespace FishRestaurant.WPF
             {
                 var Transaction = ((Transaction)ViewGrid.DataContext);
                 if (Transaction != null && LB.IsEnabled == false)
+                {
                     Paid_TB.Text = (Transaction.Total - decimal.Parse(DiscountTB.Text)).ToString("0.00");
+                    Transaction.Paid = (Transaction.Total - decimal.Parse(DiscountTB.Text));
+                }
             }
             catch
             {
@@ -338,7 +342,12 @@ namespace FishRestaurant.WPF
             {
                 var Transaction = ((Transaction)ViewGrid.DataContext);
                 if (Transaction != null && LB.IsEnabled == false)
-                    Paid_TB.Text = Total_TB.Text = (Transaction.SaleDetails.Sum(p => (p.Price * p.Amount)) + decimal.Parse(DeliveryTB.Text)).ToString("0.00");
+                {
+                    var total = (Transaction.SaleDetails.Sum(p => (p.Price * p.Amount)) + decimal.Parse(DeliveryTB.Text));
+                    Paid_TB.Text = Total_TB.Text = total.ToString("0.00");
+                    Transaction.Paid = total;
+                    Transaction.Total = total;
+                }
             }
             catch
             {
@@ -364,7 +373,8 @@ namespace FishRestaurant.WPF
                     {
                         TotalsGrid.ColumnDefinitions[0].Width = TotalsGrid.ColumnDefinitions[1].Width = new GridLength(0);
                     }
-                    GetTotal();
+                    if (LB.IsEnabled == false)
+                        GetTotal();
                 }
                 if (LB.IsEnabled == false)
                     Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, (TransactionTypes)TypeCB.SelectedItem);
@@ -378,7 +388,8 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                var total = ((Transaction)ViewGrid.DataContext).SaleDetails.Sum(p => (p.Price * p.Amount));
+                var transaction = ((Transaction)ViewGrid.DataContext);
+                var total = transaction.SaleDetails.Sum(p => (p.Price * p.Amount));
                 var type = (TransactionTypes)TypeCB.SelectedItem;
                 switch (type)
                 {
@@ -386,9 +397,10 @@ namespace FishRestaurant.WPF
                         total += total * 0.12m;
                         break;
                     case TransactionTypes.Order:
-                        total += ((Transaction)ViewGrid.DataContext).Delivery;
+                        total += transaction.Delivery;
                         break;
                 }
+                transaction.Total = total; transaction.Paid = total;
                 Paid_TB.Text = Total_TB.Text = total.ToString("0.00");
             }
             catch
@@ -416,7 +428,7 @@ namespace FishRestaurant.WPF
         {
             try
             {
-
+                Details_DG.SelectedIndex = -1;
                 ProductCB.SelectedItem = (e.OriginalSource as FrameworkElement).DataContext;
                 //Pop.IsOpen = false;
                 AmountTB.Focus();
@@ -441,7 +453,7 @@ namespace FishRestaurant.WPF
             float current_height = e.MarginBounds.Top - 20;
             float temp_height = 0;
             var saleDetails = ((Transaction)Details_GD.DataContext).SaleDetails;
-
+            var Customer = ((Transaction)Details_GD.DataContext).Person;
             e.Graphics.DrawString("أسماك السويس", new System.Drawing.Font("Cambria", 16), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
             current_height += 20;
             e.Graphics.DrawString("Fish'N Prawns", new System.Drawing.Font("Cambria", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Left, current_height, e.MarginBounds.Width, 30), sf);
@@ -453,7 +465,17 @@ namespace FishRestaurant.WPF
 
             e.Graphics.DrawString("التاريخ :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
             e.Graphics.DrawString(DateDTP.Value.Value.ToString(), new System.Drawing.Font("tahoma", 12), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
+            current_height += 30;
+            e.Graphics.DrawString("العميل  :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
+            e.Graphics.DrawString(Customer.Name, new System.Drawing.Font("Arial", 12), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
+            current_height += 30;
+            e.Graphics.DrawString("العنوان  :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
+            e.Graphics.DrawString(Customer.Address, new System.Drawing.Font("tahoma", 12), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
+            current_height += 30;
+            e.Graphics.DrawString("التليفون  :", new System.Drawing.Font("Arial", 14), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - 70, current_height, 70, 30), sf1);
+            e.Graphics.DrawString(Customer.Phone, new System.Drawing.Font("tahoma", 12), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, e.MarginBounds.Width - 70, 30), sf2);
             current_height += 35;
+
             e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
             current_height += 5;
             e.Graphics.DrawString("الصنف", new System.Drawing.Font("Arial", 10), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 120, current_height, e.MarginBounds.Width - 120, 30), sf1);
@@ -523,11 +545,13 @@ namespace FishRestaurant.WPF
                 {
                     PD1.Print();
                 }
+                ViewGrid.DataContext = null; EditGrid.DataContext = null;
                 EditGrid.DataContext = new SaleDetail() { Amount = 1 };
                 Form.Set_Style(TotalsGrid, Operations.Add);
                 ViewGrid.DataContext = new Transaction() { Date = DateDTP.Value.Value, Type = (TransactionTypes)TypeCB.SelectedItem, Delivery = 0 };
                 Number.Text = TransactionsService.GetNumber(DateDTP.Value.Value, TransactionTypes.Order);
                 Pop.IsOpen = true;
+
             }
             catch
             {
@@ -566,9 +590,9 @@ namespace FishRestaurant.WPF
         {
             try
             {
-                if(DB.People.SingleOrDefault(p=>p.Name == PersonTB.Text) != null || PersonTB.Text =="")
+                if (DB.People.SingleOrDefault(p => p.Name == PersonTB.Text) != null || PersonTB.Text == "")
                 { return; }
-                
+
                 CustomersPop.IsOpen = true;
                 int phone = 0;
                 if (int.TryParse(PersonTB.Text, out phone))
@@ -611,7 +635,7 @@ namespace FishRestaurant.WPF
             try
             {
                 Pop.IsOpen = false;
-                AddCustomer a = new AddCustomer(DB,PersonTB.Text);
+                AddCustomer a = new AddCustomer(DB, PersonTB.Text);
                 a.ShowDialog();
                 Pop.IsOpen = true;
                 PersonTB.Text = "";

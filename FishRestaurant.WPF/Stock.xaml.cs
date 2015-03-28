@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using FishRestaurant.Model.Services;
 using FishRestaurant.Model.Entities;
 using Source;
+using System.Data;
 
 
 namespace FishRestaurant.WPF
@@ -15,10 +16,12 @@ namespace FishRestaurant.WPF
     public partial class Stock : Page
     {
         FrContext DB;
+        DataTable Table;
         public Stock()
         {
             InitializeComponent();
-
+            Table = new DataTable();
+            Table.Columns.Add("الفئة"); Table.Columns.Add("الصنف");  Table.Columns.Add("رصيد المخزن");//Table.Columns.Add("حد الشراء");
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -51,11 +54,12 @@ namespace FishRestaurant.WPF
 
             try
             {
+                Table.Rows.Clear();
                 var query = DB.Components.Where(c => c.Name.StartsWith(ComponentSearchTB.Text));
                 if (CategorySearchCB.SelectedIndex > 0) { query = query.Where(c => c.CategoryId == (int)CategorySearchCB.SelectedValue); }
 
 
-                ComponentsDG.ItemsSource = query.OrderBy(c => c.Name).ToList().Select(c => new
+                var list = query.OrderBy(c => c.Name).ToList().Select(c => new
                 {
                     Category = c.Category.Name,
                     Component = c.Name,
@@ -64,6 +68,11 @@ namespace FishRestaurant.WPF
                     Status = c.StoreStock > c.AmountLimit ? 1 : c.StoreStock == c.AmountLimit ? 0 : -1
                 }
                 ).ToList();
+                ComponentsDG.ItemsSource = list;
+                foreach (var item in list)
+                {
+                    Table.Rows.Add(item.Category, item.Component, item.StoreStock);
+                }
             }
             catch
             {
@@ -74,6 +83,13 @@ namespace FishRestaurant.WPF
         private void FillDG(object sender, EventArgs e)
         {
             FillDG();
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            CPrinting.CPrinting Printer = new CPrinting.CPrinting();
+            Printer.printedDataTable.Add(Table);
+            Printer.print();
         }
     }
 }

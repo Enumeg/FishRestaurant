@@ -295,7 +295,9 @@ namespace FishRestaurant.WPF
             try
             {
                 var Purchase = ((Transaction)ViewGrid.DataContext);
-                Rest_TB.Text = (Purchase.Total - decimal.Parse(DiscountTB.Text) - Purchase.Paid).ToString("0.00");
+                //OLD//Rest_TB.Text = (Purchase.Total - decimal.Parse(DiscountTB.Text) - Purchase.Paid).ToString("0.00");
+                Rest_TB.Text = (Purchase.Total - decimal.Parse(DiscountTB.Text) - decimal.Parse(Paid_TB.Text)).ToString("0.00");
+            
             }
             catch
             {
